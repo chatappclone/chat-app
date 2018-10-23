@@ -27,11 +27,13 @@
   "homepage": "https://github.com/chatappclone/chat-app#readme",
   "dependencies": {
     "@babel/preset-env": "^7.1.0",
+    "@pusher/chatkit": "^0.7.18",
     "@pusher/chatkit-server": "^0.12.2",
     "body-parser": "^1.18.3",
     "classnames": "^2.2.6",
     "dotenv": "^6.1.0",
     "express": "^4.16.4",
+    "fs": "0.0.1-security",
     "hbs": "^4.0.1",
     "jsonwebtoken": "^8.3.0",
     "node": "^10.12.0",
