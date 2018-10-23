@@ -16,7 +16,7 @@ const chatkit = new Chatkit.default({
 
 let token;
 const instanceId = process.env.CHATKIT_INSTANCE_ID;
-fetch(`https://us1.pusherplatform.io/services/chatkit_token_provider/v1/${instanceId}/token`, {
+fetch(process.env.CHATKIT_TOKEN_PROVIDER_URL, {
   method: "POST",
   body: JSON.stringify({ "grant_type": "client_credentials",
                          "user_id": "jane" }),
@@ -54,18 +54,18 @@ app.post('/api/new-user', (req,res) => {
     name
   })
     .then(() => {
-      res.json('User created successfully')
+      res.json('User created successfully');
       console.log('User created successfully');
     }).catch((err) => {
       console.log(err);
     });
-})
+});
 
 app.post('/api/new-room', (req, res) => {
   const { creatorId, name } = req.body;
   chatkit.createRoom({
     creatorId,
-    name,
+    name
   })
     .then(() => {
       res.json('Room created successfully');
@@ -73,7 +73,7 @@ app.post('/api/new-room', (req, res) => {
     }).catch((err) => {
       console.log(err);
     });
-})
+});
 
 app.listen(8080, function(){
   console.log('Listening on port 8080');

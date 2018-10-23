@@ -7,10 +7,11 @@ import SendMessageForm from './SendMessageForm';
 
 class ChatRoom extends React.Component {
 
-  constructor(){
+  constructor() {
+
     super();
 
-    this.state = { roomMessages: [] }
+    this.state = { roomMessages: [] };
 
     this.receiveSendMessage = this.receiveSendMessage.bind(this);
   }
@@ -25,7 +26,7 @@ class ChatRoom extends React.Component {
     }))
     .then(roomMessages => this.setState({
       roomMessages
-    }))
+    }));
   }
 
   receiveSendMessage(messageText) {
@@ -41,7 +42,7 @@ class ChatRoom extends React.Component {
     return (
       <div>
         <p>This is a chat room</p>
-        <Title currentRoom={this.props.currentRoom} />
+        <Title currentRoom={this.props.currentRoom}/>
         <MessageList
           currentRoom={this.props.currentRoom}
           roomMessages={this.state.roomMessages}/>
@@ -50,4 +51,5 @@ class ChatRoom extends React.Component {
     );
   }
 }
-export default ChatRoom
+
+export default ChatRoom;

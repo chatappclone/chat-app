@@ -4,10 +4,10 @@ class Message extends React.Component {
 
   constructor() {
     super();
-
   }
 
   render() {
+    
     const message = this.props.message;
 
     return (
