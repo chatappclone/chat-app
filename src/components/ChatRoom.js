@@ -16,6 +16,7 @@ class ChatRoom extends React.Component {
   componentDidMount(){
     // we need an array of message object passing
     //in the the currentRoom.id as the parameter
+    // it then need to be set into this.state.roomMessages
   }
 
   render() {
