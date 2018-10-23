@@ -54,7 +54,7 @@ class App extends React.Component {
        </div>
 
        <div className="app__room">
-         <ChatRoom />
+         <ChatRoom currentRoom={this.state.currentRoom} />
        </div>
 
       </div>

@@ -4,7 +4,7 @@ class Title extends React.Component {
 
   render() {
     return (
-      <h3>Title</h3>
+      <h3>{this.props.currentRoom.name}</h3>
     );
   }
 }
