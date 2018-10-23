@@ -4,7 +4,10 @@ class SendMessageForm extends React.Component {
 
   render() {
     return (
-
+      <form>
+        <input type="search" placeholder="Type Message" />
+        <button type="submit">Send</button>
+      </form>
     );
   }
 }

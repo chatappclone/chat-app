@@ -7,7 +7,11 @@ class ChatRoom extends React.Component {
 
   render() {
     return (
-
+      <div>
+        <Title />
+        <MessageList />
+        <SendMessageForm />
+      </div>
     );
   }
 }
