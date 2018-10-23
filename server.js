@@ -12,21 +12,33 @@ app.set('view engine', 'hbs');
 const chatkit = new Chatkit.default({
   instanceLocator: process.env.CHATKIT_INSTANCE_LOCATOR,
   key: process.env.CHATKIT_SECRET_KEY
-})
+});
+
+let token;
+const instanceId = process.env.CHATKIT_INSTANCE_ID;
+fetch(`https://us1.pusherplatform.io/services/chatkit_token_provider/v1/${instanceId}/token`, {
+  method: 'POST',
+  body: JSON.stringify({ grant_type: 'client_credentials',
+                         user_id: 'yetkin' }),
+  headers: {
+      'Content-Type': 'application/json'
+  }})
+  .then(response => {
+    console.log(response.json());
+    token = response['access_token'];
+  });
 
 app.get('/', function(req, res){
   res.render('index');
 });
 
 app.get('/users/2/rooms', (req,res) => {
-  const instanceId = process.env.CHATKIT_INSTANCE_ID;
   fetch(`https://us1.pusherplatform.io/services/chatkit/v1/${instanceId}/rooms`)
   .then(response => res.json(response))
   .catch(error => console.log(error));
 });
 
 app.get('/rooms/19295262/messages', (req,res) => { //Get rooms by user id
-  const instanceId = process.env.CHATKIT_INSTANCE_ID;
   fetch(`https://us1.pusherplatform.io/services/chatkit/v1/${instanceId}/rooms/19295262/messages`)
   .then(response => res.json(response))
   .catch(error => console.log(error));
