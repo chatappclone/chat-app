@@ -11,6 +11,8 @@ class ChatRoom extends React.Component {
     super();
 
     this.state = { roomMessages: [] }
+
+    this.receiveSendMessage = this.receiveSendMessage.bind(this);
   }
 
   componentDidMount(){
@@ -19,13 +21,19 @@ class ChatRoom extends React.Component {
     // it then need to be set into this.state.roomMessages
   }
 
+  receiveSendMessage(message) {
+    this.setState ( {
+      roomMessages : [...this.state.roomMessages].concat(message);
+    })
+  }
+
   render() {
     return (
       <div>
         <p>This is a chat room</p>
         <Title currentRoom={this.props.currentRoom} />
         <MessageList currentRoom={this.props.currentRoom} />
-        <SendMessageForm />
+        <SendMessageForm receiveSendMessage={this.receiveSendMessage}/>
       </div>
     );
   }
