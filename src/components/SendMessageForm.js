@@ -1,7 +1,5 @@
 import React from 'React';
 
-import React from 'React';
-
 class SendMessageForm extends React.Component {
 
   constructor () {
@@ -34,10 +32,10 @@ class SendMessageForm extends React.Component {
         className="send__message__form">
         <input
              onChange={this.handleChange}
-             value={this.state.message}
              placeholder= "Type your message here amd press ENTER"
            type="text"
          />
+         <button type="submit">Send</button>
       </form>
     );
   }
