@@ -27,6 +27,7 @@
   "homepage": "https://github.com/chatappclone/chat-app#readme",
   "dependencies": {
     "@babel/preset-env": "^7.1.0",
+    "@pusher/chatkit-server": "^0.12.2",
     "body-parser": "^1.18.3",
     "classnames": "^2.2.6",
     "express": "^4.16.4",
