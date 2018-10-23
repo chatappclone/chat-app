@@ -17,32 +17,50 @@ const chatkit = new Chatkit.default({
 let token;
 const instanceId = process.env.CHATKIT_INSTANCE_ID;
 fetch(`https://us1.pusherplatform.io/services/chatkit_token_provider/v1/${instanceId}/token`, {
-  method: 'POST',
-  body: JSON.stringify({ grant_type: 'client_credentials',
-                         user_id: 'yetkin' }),
+  method: "POST",
+  body: JSON.stringify({ "grant_type": "client_credentials",
+                         "user_id": "jane" }),
   headers: {
-      'Content-Type': 'application/json'
+      "Content-Type": "application/json"
   }})
-  .then(response => {
-    console.log(response.json());
-    token = response['access_token'];
+  .then(response => response.json())
+  .then(authResponse => {
+    token = authResponse['access_token'];
   });
 
 app.get('/', function(req, res){
   res.render('index');
 });
 
-app.get('/users/2/rooms', (req,res) => {
-  fetch(`https://us1.pusherplatform.io/services/chatkit/v1/${instanceId}/rooms`)
-  .then(response => res.json(response))
+app.get('/users/:userId/rooms', (req,res) => {
+  const userId = req.params.userId;
+  fetch(`https://us1.pusherplatform.io/services/chatkit/v1/${instanceId}/users/${userId}/rooms`, {
+    method: 'GET',
+    headers: {
+      "Authorization" : `Bearer ${token}`
+    }
+  })
+  .then(response => response.json())
+  .then(data => {
+    res.json(data);
+  })
   .catch(error => console.log(error));
 });
 
-app.get('/rooms/19295262/messages', (req,res) => { //Get rooms by user id
-  fetch(`https://us1.pusherplatform.io/services/chatkit/v1/${instanceId}/rooms/19295262/messages`)
-  .then(response => res.json(response))
-  .catch(error => console.log(error));
-});
+// app.get('/rooms/:roomId/messages', (req,res) => { 
+//   const roomId = req.params.roomId;
+//   fetch(`https://us1.pusherplatform.io/services/chatkit/v1/${instanceId}/rooms/${roomId}/messages`, {
+//     method: 'GET',
+//     headers: {
+//       "Authorization" : `Bearer ${token}`
+//     }
+//   })
+//   .then(response => response.json())
+//   .then(data => {
+//     res.json(data);
+//   })
+//   .catch(error => console.log(error));
+// });
 
 app.get('/api/messages', (req,res) => { //Get messages by user id
 
