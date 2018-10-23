@@ -12,7 +12,9 @@ class App extends React.Component {
     super()
 
     this.state = { roomList: [],
-                   currentRoom: {}
+                   currentRoom: {},
+                   currentUser: "",
+                   currentView: "previews"
                  }
 
     this.receiveHandleCurrentRoom = this.receiveHandleCurrentRoom.bind(this);
@@ -21,8 +23,19 @@ class App extends React.Component {
   componentDidMount(){
     const chatManager = new ChatManager({
       instanceLocator: 'v1:us1:91abf019-fdaa-421a-be70-86cdf9ce4f2f',
-      userId: 'sarah',
+      userId: '1',
       tokenProvider: new TokenProvider({ url: 'https://us1.pusherplatform.io/services/chatkit_token_provider/v1/91abf019-fdaa-421a-be70-86cdf9ce4f2f/token' })
+    })
+
+    chatManager.connect()
+    .then(currentUser => {
+      this.setState({
+        currentUser: currentUser
+      })
+      console.log('Successful connection', currentUser.id)
+    })
+    .catch(err => {
+      console.log('Error on connection', err)
     })
 
     fetch("http://localhost:8080/users/1/rooms")
@@ -37,8 +50,12 @@ class App extends React.Component {
 
   receiveHandleCurrentRoom(currentRoom) {
     this.setState ( {
-      currentRoom : currentRoom
-    }, () => console.log('current room state', this.state.currentRoom) )
+      currentRoom : currentRoom,
+      currentView: "chatRoom"
+    })
+
+
+
   }
 
   render() {
@@ -52,6 +69,7 @@ class App extends React.Component {
         <ul>
          {this.state.roomList.map( room => {
            return (
+             (this.state.currentView === 'previews') &&
              <li key={room.id}>
              <Preview
               room={room}
@@ -64,7 +82,7 @@ class App extends React.Component {
        </div>
 
        <div className="app__room">
-         <ChatRoom currentRoom={this.state.currentRoom} />
+         {(this.state.currentView === 'chatRoom') && <ChatRoom currentUser={this.state.currentUser} currentRoom={this.state.currentRoom} />}
        </div>
 
       </div>

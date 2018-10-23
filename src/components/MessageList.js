@@ -1,5 +1,5 @@
 import React from 'React';
-
+import Message from './Message';
 
 
 class MessageList extends React.Component {
@@ -10,18 +10,15 @@ class MessageList extends React.Component {
         <ul>
           {this.props.roomMessages.map(message => {
             return (
-              <li key={message.id}>
-                <p>Current message id: {message.id}</p>
-                <p>Current message id: {message.text}</p>
-                <p>Current message id: {message.user_id}</p>
-                <p>Current message id: {message.created_at}</p>
-              </li>
+              
+                <Message key={message.id} message={message} /> 
+            
             )
           })}
         </ul>
       </div>
-
     );
   }
 }
-export default MessageList
+
+export default MessageList;

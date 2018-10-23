@@ -16,9 +16,16 @@ class ChatRoom extends React.Component {
   }
 
   componentDidMount(){
-    // we need an array of message object passing
-    //in the the currentRoom.id as the parameter
-    // it then need to be set into this.state.roomMessages
+    this.props.currentUser.fetchMessages({
+      roomId: this.props.currentRoom.id,
+    })
+    .then(messages => messages.map(item => {
+      console.log(item);
+      return {userId: item.senderId, text: item.text, createdAt: item.createdAt, id: item.id}
+    }))
+    .then(roomMessages => this.setState({
+      roomMessages
+    }))
   }
 
   receiveSendMessage(messageText) {
