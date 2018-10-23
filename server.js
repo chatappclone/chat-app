@@ -3,69 +3,64 @@ const bodyParser = require('body-parser');
 const Chatkit = require('@pusher/chatkit-server');
 require('dotenv').config();
 const app = express();
+const fetch = require('node-fetch');
 
 app.use(bodyParser.json());
 app.use('/static', express.static('static'));
 app.set('view engine', 'hbs');
 
+const chatkit = new Chatkit.default({
+  instanceLocator: process.env.CHATKIT_INSTANCE_LOCATOR,
+  key: process.env.CHATKIT_SECRET_KEY
+});
+
+let token;
+const instanceId = process.env.CHATKIT_INSTANCE_ID;
+fetch(`https://us1.pusherplatform.io/services/chatkit_token_provider/v1/${instanceId}/token`, {
+  method: "POST",
+  body: JSON.stringify({ "grant_type": "client_credentials",
+                         "user_id": "jane" }),
+  headers: {
+      "Content-Type": "application/json"
+  }})
+  .then(response => response.json())
+  .then(authResponse => {
+    token = authResponse['access_token'];
+  });
+
 app.get('/', function(req, res){
   res.render('index');
 });
 
-app.get('/api/rooms', (req,res) => { //Get rooms by user id
-
-  const rooms = {
-    "rooms": [
-      {
-        "id": 1,
-        "created_by_id": 1,
-        "name": "januaryroom",
-        "private": false,
-        "created_at": "2017-03-23T11:36:42Z",
-        "updated_at": "2017-03-23T11:36:42Z",
-        "member_user_ids": ["luke", "ham"]
-      },
-      {
-        "id": 2,
-        "created_by_id": 2,
-        "name": "februaryroom",
-        "private": false,
-        "created_at": "2017-03-23T11:40:42Z",
-        "updated_at": "2017-03-23T11:40:42Z",
-        "member_user_ids": ["luke", "paul"]
-      },
-      {
-        "id": 3,
-        "created_by_id": 1,
-        "name": "marchroom",
-        "private": false,
-        "created_at": "2017-03-23T11:45:42Z",
-        "updated_at": "2017-03-23T11:45:42Z",
-        "member_user_ids": ["ham", "paul"]
-      },
-      {
-        "id": 4,
-        "created_by_id": 2,
-        "name": "aprilroom",
-        "private": false,
-        "created_at": "2017-03-23T11:45:42Z",
-        "updated_at": "2017-03-23T11:45:42Z",
-        "member_user_ids": ["luke", "ham"]
-      },
-      {
-        "id": 5,
-        "created_by_id": 1,
-        "name": "mayroom",
-        "private": false,
-        "created_at": "2017-03-23T11:50:42Z",
-        "updated_at": "2017-03-23T11:50:42Z",
-        "member_user_ids": ["paul", "luke"]
-      }
-    ]
-  };
-
-  res.json(rooms);
+app.get('/users/:userId/rooms', (req,res) => {
+  const userId = req.params.userId;
+  fetch(`https://us1.pusherplatform.io/services/chatkit/v1/${instanceId}/users/${userId}/rooms`, {
+    method: 'GET',
+    headers: {
+      "Authorization" : `Bearer ${token}`
+    }
+  })
+  .then(response => response.json())
+  .then(data => {
+    res.json(data);
+  })
+  .catch(error => console.log(error));
 });
+
+// app.get('/rooms/:roomId/messages', (req,res) => { 
+//   const roomId = req.params.roomId;
+//   fetch(`https://us1.pusherplatform.io/services/chatkit/v1/${instanceId}/rooms/${roomId}/messages`, {
+//     method: 'GET',
+//     headers: {
+//       "Authorization" : `Bearer ${token}`
+//     }
+//   })
+//   .then(response => response.json())
+//   .then(data => {
+//     res.json(data);
+//   })
+//   .catch(error => console.log(error));
+// });
 
 app.get('/api/messages', (req,res) => { //Get messages by user id
 
@@ -111,6 +106,34 @@ app.get('/api/messages', (req,res) => { //Get messages by user id
 
   res.json(messages);
 });
+
+app.post('/api/new-user', (req,res) => {
+  const { id, name } = req.body;
+  chatkit.createUser({
+    id,
+    name
+  })
+    .then(() => {
+      res.json('User created successfully')
+      console.log('User created successfully');
+    }).catch((err) => {
+      console.log(err);
+    });
+})
+
+app.post('/api/new-room', (req, res) => {
+  const { creatorId, name } = req.body;
+  chatkit.createRoom({
+    creatorId,
+    name,
+  })
+    .then(() => {
+      res.json('Room created successfully');
+      console.log('Room created successfully');
+    }).catch((err) => {
+      console.log(err);
+    });
+})
 
 app.listen(8080, function(){
   console.log('Listening on port 8080');
