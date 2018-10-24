@@ -63,40 +63,27 @@ app.get("/users/:userId/rooms", (req, res) => {
     .catch(error => console.log(error));
 });
 
-app.post("/api/new-user", (req, res) => {
-  const { id, name } = req.body;
-  chatkit
-    .createUser({
-      id,
-      name
-    })
-    .then(() => {
-      res.json("User created successfully");
-      console.log("User created successfully");
-    })
-    .catch(err => {
-      console.log(err);
-    });
-});
-
-app.get("/api/users", (req, res) => {
-  db.any("SELECT * FROM users")
-    .then(users => res.json(users))
-    .catch(error => console.log(error));
-});
-
 app.post("/api/create-user", (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
-  bcrypt
-    .hash(password, saltRounds, function(err, hash) {
-      db.one(
-        "INSERT INTO users (username, password) VALUES ($1, $2) RETURNING id, username, password",
-        [username, hash]
-      )
-      .then(response => res.json(response))
+  bcrypt.hash(password, saltRounds, function(err, hash) {
+    db.one(
+      "INSERT INTO users (username, password) VALUES ($1, $2) RETURNING id, username",
+      [username, hash]
+    )
+      .then(response => {
+        const userId = response.id.toString();
+        chatkit
+          .createUser({
+            id: userId,
+            name: response.username
+          })
+          .then(data => {
+            res.json({id: data.id, name: data.name});
+          });
+      })
       .catch(error => console.log(error));
-    })
+  });
 });
 
 app.post("/api/new-room", (req, res) => {
