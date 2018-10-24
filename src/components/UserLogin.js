@@ -69,7 +69,7 @@ class UserLogin extends React.Component {
 
   handleCreateUserSubmit(event) {
     event.preventDefault();
-    this.props.receiveUserLogin(this.state.createUser)
+    this.props.receiveCreateUser(this.state.createUser)
   }
 
   render() {
