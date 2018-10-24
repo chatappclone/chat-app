@@ -1,13 +1,23 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const Chatkit = require('@pusher/chatkit-server');
-require('dotenv').config();
+const express = require("express");
+const bodyParser = require("body-parser");
+const Chatkit = require("@pusher/chatkit-server");
+require("dotenv").config();
 const app = express();
-const fetch = require('node-fetch');
+const fetch = require("node-fetch");
+const pgp = require("pg-promise")();
+const db = pgp({
+  host: "localhost",
+  port: 5432,
+  database: process.env.TABLE_NAME,
+  user: process.env.TABLE_USERNAME,
+  password: process.env.TABLE_PASSWORD
+});
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 
 app.use(bodyParser.json());
-app.use('/static', express.static('static'));
-app.set('view engine', 'hbs');
+app.use("/static", express.static("static"));
+app.set("view engine", "hbs");
 
 const chatkit = new Chatkit.default({
   instanceLocator: process.env.CHATKIT_INSTANCE_LOCATOR,
@@ -18,63 +28,102 @@ let token;
 const instanceId = process.env.CHATKIT_INSTANCE_ID;
 fetch(process.env.CHATKIT_TOKEN_PROVIDER_URL, {
   method: "POST",
-  body: JSON.stringify({ "grant_type": "client_credentials",
-                         "user_id": "jane" }),
+  body: JSON.stringify({
+    grant_type: "client_credentials",
+    user_id: "jane"
+  }),
   headers: {
-      "Content-Type": "application/json"
-  }})
+    "Content-Type": "application/json"
+  }
+})
   .then(response => response.json())
   .then(authResponse => {
-    token = authResponse['access_token'];
+    token = authResponse["access_token"];
   });
 
-app.get('/', function(req, res){
-  res.render('index');
+app.get("/", function(req, res) {
+  res.render("index");
 });
 
-app.get('/users/:userId/rooms', (req,res) => {
+app.get("/users/:userId/rooms", (req, res) => {
   const userId = req.params.userId;
-  fetch(`https://us1.pusherplatform.io/services/chatkit/v1/${instanceId}/users/${userId}/rooms`, {
-    method: 'GET',
-    headers: {
-      "Authorization" : `Bearer ${token}`
+  fetch(
+    `https://us1.pusherplatform.io/services/chatkit/v1/${instanceId}/users/${userId}/rooms`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
     }
-  })
-  .then(response => response.json())
-  .then(data => {
-    res.json(data);
+  )
+    .then(response => response.json())
+    .then(data => {
+      res.json(data);
+    })
+    .catch(error => console.log(error));
+});
+
+app.post("/api/create-user", (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+  bcrypt.hash(password, saltRounds, function(err, hash) {
+    db.one(
+      "INSERT INTO users (username, password) VALUES ($1, $2) RETURNING id, username",
+      [username, hash]
+    )
+      .then(response => {
+        const userId = response.id.toString();
+        chatkit
+          .createUser({
+            id: userId,
+            name: response.username
+          })
+          .then(data => {
+            res.json({ id: data.id, name: data.name });
+          });
+      })
+      .catch(error => console.log(error));
+  });
+});
+
+app.post("/api/login", (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+  db.one("SELECT * FROM users WHERE username = $1", [username])
+  .then(user => {
+    if (!user) {
+      console.log("There is no user");
+    } else {
+      bcrypt.compare(password, user.password, function(err, result) {
+        if (result === true) {
+          res.json({id: user.id, username: user.username});
+          console.log(user);
+        } else {
+          res.send("Incorrect Password");
+          console.log("Incorrect Password");
+        }
+      });
+    }
   })
   .catch(error => console.log(error));
 });
 
-app.post('/api/new-user', (req,res) => {
-  const { id, name } = req.body;
-  chatkit.createUser({
-    id,
-    name
-  })
-    .then(() => {
-      res.json('User created successfully');
-      console.log('User created successfully');
-    }).catch((err) => {
-      console.log(err);
-    });
-});
-
-app.post('/api/new-room', (req, res) => {
+app.post("/api/new-room", (req, res) => {
   const { creatorId, name } = req.body;
-  chatkit.createRoom({
-    creatorId,
-    name
-  })
+  chatkit
+    .createRoom({
+      creatorId,
+      name
+    })
     .then(() => {
-      res.json('Room created successfully');
-      console.log('Room created successfully');
-    }).catch((err) => {
+      res.json("Room created successfully");
+      console.log("Room created successfully");
+    })
+    .catch(err => {
       console.log(err);
     });
 });
 
-app.listen(8080, function(){
-  console.log('Listening on port 8080');
+app.listen(8080, function() {
+  console.log("Listening on port 8080");
 });
