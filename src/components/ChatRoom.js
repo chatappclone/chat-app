@@ -18,25 +18,29 @@ class ChatRoom extends React.Component {
   }
 
   componentDidMount(){
-    this.props.currentUser.fetchMessages({
-      roomId: this.props.currentRoom.id,
-    })
-    .then(messages => messages.map(item => {
-      console.log(item);
-      return {userId: item.senderId, text: item.text, createdAt: item.createdAt, id: item.id}
-    }))
-    .then(roomMessages => this.setState({
-      roomMessages
-    }));
+    this.props.currentUser.subscribeToRoom({
+        roomId: this.props.currentRoom.id,
+        hooks: {
+          onNewMessage: message => {
+            console.log(`Received new message: ${message.text}`)
+            this.setState({
+              roomMessages: this.state.roomMessages.concat({userId: message.senderId, text: message.text, createdAt: message.createdAt, id: message.id})
+            })
+          }
+        }
+      })
+    .catch(error => {
+      console.error("error:", error);
+    });
   }
 
   receiveSendMessage(messageText) {
+    console.log('message text', messageText)
+    this.props.currentUser.sendMessage({
+      text: messageText,
+      roomId: this.props.currentRoom.id
+    });
 
-
-  
-    // this.setState ( {
-    //   roomMessages : [...this.state.roomMessages].concat(message)
-    // })
   }
 
   render() {

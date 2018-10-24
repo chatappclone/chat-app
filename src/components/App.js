@@ -32,7 +32,7 @@ class App extends React.Component {
       this.setState({
         currentUser: currentUser
       });
-      console.log('Successful connection', currentUser.id);
+      console.log('Successful connection', currentUser);
     })
     .catch(err => {
       console.log('Error on connection', err);
