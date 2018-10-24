@@ -87,6 +87,22 @@ class App extends React.Component {
 
   receiveCreateUser(user){
     console.log(user)
+    fetch('/api/create-user', {
+      method: "POST",
+      body: JSON.stringify(user),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      this.setState({
+        user:{
+          id: data.id,
+          username: data.username
+        }
+      }, () => this.loadUserChat())
+    })
   }
 
 
