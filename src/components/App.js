@@ -2,6 +2,7 @@ import React from 'react';
 import { ChatManager, TokenProvider } from '@pusher/chatkit';
 import RoomPreviews from './RoomPreviews';
 import ChatRoom from './ChatRoom';
+import UserLogin from './UserLogin';
 import '../styles/App.scss';
 
 class App extends React.Component {
@@ -58,6 +59,7 @@ class App extends React.Component {
 
     return (
       <div className="app">
+        <UserLogin />
         <h2>Chat App</h2>
         {(this.state.currentView === 'previews') &&
         <div className="app__rooms">

@@ -22,7 +22,6 @@ class ChatRoom extends React.Component {
         roomId: this.props.currentRoom.id,
         hooks: {
           onNewMessage: message => {
-            console.log(`Received new message: ${message.text}`)
             this.setState({
               roomMessages: this.state.roomMessages.concat({userId: message.senderId, text: message.text, createdAt: message.createdAt, id: message.id})
             })
