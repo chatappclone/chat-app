@@ -1,4 +1,4 @@
-import React from 'React';
+import React from 'react';
 import Title from './Title';
 import MessageList from './MessageList';
 import SendMessageForm from './SendMessageForm';
@@ -45,7 +45,7 @@ class ChatRoom extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className='chat-room'>
         <p>This is a chat room</p>
         <Title currentRoom={this.props.currentRoom}/>
         <MessageList

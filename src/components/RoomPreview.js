@@ -1,4 +1,4 @@
-import React from 'React';
+import React from 'react';
 import '../styles/RoomPreview.scss';
 
 class RoomPreview extends React.Component {
