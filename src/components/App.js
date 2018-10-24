@@ -2,6 +2,7 @@ import React from 'react';
 import { ChatManager, TokenProvider } from '@pusher/chatkit';
 import RoomPreviews from './RoomPreviews';
 import ChatRoom from './ChatRoom';
+import UserLogin from './UserLogin';
 import '../styles/App.scss';
 
 class App extends React.Component {
@@ -13,17 +14,25 @@ class App extends React.Component {
     this.state = { roomList: [],
                    currentRoom: {},
                    currentUser: "",
+                   user: {
+                     id: "",
+                     username:""
+                   },
                    currentView: "previews"
                  };
 
     this.receiveHandleCurrentRoom = this.receiveHandleCurrentRoom.bind(this);
+    this.receiveCreateUser = this.receiveCreateUser.bind(this);
+    this.receiveUserLogin = this.receiveUserLogin.bind(this);
+    this.loadUserChat = this.loadUserChat.bind(this);
+
   }
 
-  componentDidMount() {
-
+  loadUserChat() {
+    const userId = this.state.user.id.toString()
     const chatManager = new ChatManager({
       instanceLocator: process.env.CHATKIT_INSTANCE_LOCATOR,
-      userId: '1',
+      userId: userId,
       tokenProvider: new TokenProvider({ url: process.env.CHATKIT_TOKEN_PROVIDER_URL })
     });
 
@@ -38,7 +47,7 @@ class App extends React.Component {
       console.log('Error on connection', err);
     });
 
-    fetch("http://localhost:8080/users/1/rooms")
+    fetch(`http://localhost:8080/users/${this.state.user.id}/rooms`)
     .then(response => response.json())
     .then(result => {
       this.setState({
@@ -54,10 +63,38 @@ class App extends React.Component {
     });
   }
 
+
+  receiveUserLogin(user){
+    console.log(user)
+    fetch('/api/login', {
+      method: "POST",
+      body: JSON.stringify(user),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      this.setState({
+        user:{
+          id: data.id,
+          username: data.username
+        }
+      }, () => this.loadUserChat())
+    })
+  }
+
+
+  receiveCreateUser(user){
+    console.log(user)
+  }
+
+
   render() {
 
     return (
       <div className="app">
+        <UserLogin receiveCreateUser={this.receiveCreateUser} receiveUserLogin={this.receiveUserLogin} />
         <h2>Chat App</h2>
         {(this.state.currentView === 'previews') &&
         <div className="app__rooms">
