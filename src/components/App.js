@@ -18,6 +18,8 @@ class App extends React.Component {
                  };
 
     this.receiveHandleCurrentRoom = this.receiveHandleCurrentRoom.bind(this);
+    this.receiveCreateUser = this.receiveCreateUser.bind(this);
+    this.receiveUserLogin = this.receiveUserLogin.bind(this);
   }
 
   componentDidMount() {
@@ -55,11 +57,22 @@ class App extends React.Component {
     });
   }
 
+
+  receiveUserLogin(user){
+    console.log(user)
+  }
+
+
+  receiveCreateUser(user){
+    console.log(user)
+  }
+
+
   render() {
 
     return (
       <div className="app">
-        <UserLogin />
+        <UserLogin receiveCreateUser={this.receiveCreateUser} receiveUserLogin={this.receiveUserLogin} />
         <h2>Chat App</h2>
         {(this.state.currentView === 'previews') &&
         <div className="app__rooms">
