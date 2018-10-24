@@ -79,11 +79,33 @@ app.post("/api/create-user", (req, res) => {
             name: response.username
           })
           .then(data => {
-            res.json({id: data.id, name: data.name});
+            res.json({ id: data.id, name: data.name });
           });
       })
       .catch(error => console.log(error));
   });
+});
+
+app.post("/api/login", (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+  db.one("SELECT * FROM users WHERE username = $1", [username])
+  .then(user => {
+    if (!user) {
+      console.log("There is no user");
+    } else {
+      bcrypt.compare(password, user.password, function(err, result) {
+        if (result === true) {
+          res.json({id: user.id, username: user.username});
+          console.log(user);
+        } else {
+          res.send("Incorrect Password");
+          console.log("Incorrect Password");
+        }
+      });
+    }
+  })
+  .catch(error => console.log(error));
 });
 
 app.post("/api/new-room", (req, res) => {
