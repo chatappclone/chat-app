@@ -1,4 +1,5 @@
-import React from 'React';
+import React from 'react';
+import '../styles/SendMessageForm.scss';
 
 class SendMessageForm extends React.Component {
 
@@ -30,15 +31,17 @@ class SendMessageForm extends React.Component {
 
   render() {
     return (
-      <form
-        onSubmit={this.handleSubmit}
-        className="send__message__form">
-        <input
-          onChange={this.handleChange}
-          placeholder= "Type message"
-          type="text"></input>
-         <button type="submit">Send</button>
-      </form>
+      <div className='message-input'>
+        <form
+          onSubmit={this.handleSubmit}
+          className="send__message__form">
+          <input
+            onChange={this.handleChange}
+            placeholder= "Type message"
+            type="text"></input>
+          <button type="submit">Send</button>
+        </form>
+      </div>
     )
   }
 }

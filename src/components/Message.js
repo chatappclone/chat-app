@@ -12,12 +12,11 @@ class Message extends React.Component {
     const message = this.props.message;
 
     return (
-      <li>
-        <div>
-          <div>{message.text}</div>
-          <div>{message.createdAt}</div>
-        </div>
-      </li>
+      <div className='message sent'>
+        <div className='message__user'>{message.userId}</div>
+        <div className='message__text'>{message.text}</div>
+        <div className='message__createdAt'>{message.createdAt}</div>
+      </div>
     )
   }
 }
