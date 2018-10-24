@@ -2,6 +2,7 @@ import React from 'React';
 import Title from './Title';
 import MessageList from './MessageList';
 import SendMessageForm from './SendMessageForm';
+import '../styles/ChatRoom.scss';
 
 //current_room
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { ChatManager, TokenProvider } from '@pusher/chatkit';
-import Preview from './Preview';
+import RoomPreviews from './RoomPreviews';
 import ChatRoom from './ChatRoom';
 import '../styles/App.scss';
 
@@ -59,19 +59,10 @@ class App extends React.Component {
     return (
       <div className="app">
         <h2>Chat App</h2>
+        {(this.state.currentView === 'previews') &&
         <div className="app__rooms">
-          <ul>
-            {this.state.roomList.map( room => {
-              return (
-                (this.state.currentView === 'previews') &&
-                <li key={room.id}>
-                  <Preview
-                    room={room}
-                    receiveHandleCurrentRoom={this.receiveHandleCurrentRoom} />
-                 </li>)
-            })}
-        </ul>
-       </div>
+          <RoomPreviews roomList={this.state.roomList} receiveHandleCurrentRoom={this.receiveHandleCurrentRoom}/>
+       </div>}
        <div className="app__room">
          {(this.state.currentView === 'chatRoom') && <ChatRoom currentUser={this.state.currentUser} currentRoom={this.state.currentRoom} />}
        </div>

@@ -1,6 +1,7 @@
 import React from 'React';
+import '../styles/RoomPreview.scss';
 
-class Preview extends React.Component {
+class RoomPreview extends React.Component {
 
   constructor () {
     super()
@@ -22,4 +23,4 @@ handleClick () {
     )
   }
 }
-export default Preview
+export default RoomPreview;
