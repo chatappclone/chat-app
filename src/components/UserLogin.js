@@ -1,4 +1,5 @@
 import React from "react";
+import '../styles/UserLogin.scss';
 
 class UserLogin extends React.Component {
   constructor() {
@@ -73,30 +74,39 @@ class UserLogin extends React.Component {
 
   render() {
     return (
-      <div>
-        <form onSubmit={this.handleLoginSubmit}>
-          <h2>Log in:</h2>
-          <label>Username:</label>
-          <input onChange={this.handleLoginUsernameChange} />
-          <label>Password:</label>
-          <input
-            onChange={this.handleLoginPasswordChange}
-            type="password"
-            minLength="3"
-          />
+      <div className='user-login'>
+        <div className='user-login__logo'></div>
+        <form className='user-login__existing' onSubmit={this.handleLoginSubmit}>
+          <div className='user-login__existing-title'>Existing users</div>
+          <div className='user-login__existing-username'>
+            <label>Username:</label>
+            <input onChange={this.handleLoginUsernameChange} />
+          </div>
+          <div className='user-login__existing-password'>
+            <label>Password:</label>
+            <input
+              onChange={this.handleLoginPasswordChange}
+              type="password"
+              minLength="3"
+            />
+          </div>
           <button type="submit">Log in</button>
         </form>
-        <form onSubmit={this.handleCreateUserSubmit}>
-          <h2>Create user:</h2>
-          <label>Username:</label>
-          <input onChange={this.handleCreateUsernameChange} />
-          <label>Password:</label>
-          <input
-            onChange={this.handleCreatePasswordChange}
-            type="password"
-            minLength="3"
-            placeholder="3 characters minimum"
-          />
+        <form className='user-login__new' onSubmit={this.handleCreateUserSubmit}>
+          <div className='user-login__new-title'>New users</div>
+          <div className='user-login__new-username'>
+            <label>Username:</label>
+            <input onChange={this.handleCreateUsernameChange} />
+          </div>
+          <div className='user-login__new-password'>
+            <label>Password:</label>
+            <input
+              onChange={this.handleCreatePasswordChange}
+              type="password"
+              minLength="3"
+              placeholder="3 characters minimum"
+            />
+          </div>
           <button type="submit">Create user</button>
         </form>
       </div>
