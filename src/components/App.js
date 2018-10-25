@@ -145,6 +145,7 @@ class App extends React.Component {
           receiveHandleCurrentRoom={this.receiveHandleCurrentRoom} />}
         {this.state.currentView === "chatRoom" && 
         <ChatRoom
+          user={this.state.user}
           currentUser={this.state.currentUser}
           currentRoom={this.state.currentRoom} />}
       </div>
