@@ -49,7 +49,8 @@ class Login extends React.Component {
     this.setState({
         createUser: {
             username: event.target.value,
-            password: this.state.createUser.password
+            password: this.state.createUser.password,
+            avatar: "https://secure.gravatar.com/avatar/0ba92bd0375beca9c95f958e7a331219"
         }
   });
 }
@@ -58,7 +59,8 @@ class Login extends React.Component {
     this.setState({
         createUser: {
             username: this.state.createUser.username,
-            password: event.target.value
+            password: event.target.value,
+            avatar: "https://secure.gravatar.com/avatar/0ba92bd0375beca9c95f958e7a331219"
         }
     });
   }
