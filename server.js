@@ -142,6 +142,16 @@ app.get("/users/:userId/rooms", (req, res) => {
   .catch(error => console.log(error));
 });
 
+// Get user by ID
+app.get('/api/users/:userId', (req, res) => {
+  const userId = req.params.userId;
+  db.one(
+    'SELECT (username) FROM users WHERE id = $1', [userId]
+  )
+  .then(response => res.json(response))
+  .catch(error => console.log(error));
+})
+
 // Start listening
 app.listen(8080, function() {
   console.log("Listening on port 8080");
