@@ -26,6 +26,11 @@ class App extends React.Component {
     this.receiveCreateUser = this.receiveCreateUser.bind(this);
     this.receiveUserLogin = this.receiveUserLogin.bind(this);
     this.loadUserChat = this.loadUserChat.bind(this);
+    this.goBack = this.goBack.bind(this);
+  }
+
+  goBack() {
+    this.setState({currentView: "previews"});
   }
 
   loadUserChat() {
@@ -82,7 +87,6 @@ class App extends React.Component {
   }
 
   receiveUserLogin(user) {
-    console.log(user);
     fetch("/api/login", {
       method: "POST",
       body: JSON.stringify(user),
@@ -145,6 +149,7 @@ class App extends React.Component {
           receiveHandleCurrentRoom={this.receiveHandleCurrentRoom} />}
         {this.state.currentView === "chatRoom" &&
         <ChatRoom
+          goBack={this.goBack}
           user={this.state.user}
           currentUser={this.state.currentUser}
           currentRoom={this.state.currentRoom} />}

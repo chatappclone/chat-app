@@ -1,6 +1,8 @@
 @import 'defaults';
 
 .conversation-compose {
+  position: fixed;
+  bottom: 5px;
   display: flex;
   flex-direction: row;
   align-items: flex-end;
