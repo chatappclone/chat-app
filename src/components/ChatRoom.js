@@ -26,7 +26,8 @@ class ChatRoom extends React.Component {
         roomId: this.props.currentRoom.id,
         hooks: {
           onNewMessage: message => {
-            const userId = this.props.user.id.toString()
+            const userId = this.props.user.id.toString();
+            if (!isNaN(message.senderId)) {
             fetch(`/api/users/${message.senderId}`)
               .then(response => response.json())
               .then(data => {
@@ -54,6 +55,7 @@ class ChatRoom extends React.Component {
                   () => console.log(this.state.otherUser)
                 );
               });
+            }
           }
         }
       })
