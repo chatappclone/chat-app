@@ -16,6 +16,7 @@ class ChatRoom extends React.Component {
   }
 
   componentDidMount(){
+
     this.props.currentUser.subscribeToRoom({
         roomId: this.props.currentRoom.id,
         hooks: {
@@ -67,6 +68,7 @@ class ChatRoom extends React.Component {
         </div>
         <div className="conversation">
           <Messages
+            currentUser={this.props.currentUser}
             currentRoom={this.props.currentRoom}
             roomMessages={this.state.roomMessages}/>
           <Compose receiveSendMessage={this.receiveSendMessage}/>
