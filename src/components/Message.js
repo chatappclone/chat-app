@@ -12,7 +12,7 @@ class Message extends React.Component {
   render() {
       const message = this.props.message;
       const currentUserId = this.props.user.id;
-      const msgType = (message.userId !== currentUserId) ? 'received' : 'sent';
+      const msgType = (parseInt(message.userId,10) !== currentUserId) ? 'received' : 'sent';
       const classMsg = cx('message', msgType);
       const myDate = new Date(message.createdAt);
       const timestamp = `${myDate.getHours().toString().padStart(2,'0')}:${myDate.getMinutes().toString().padStart(2,'0')}`;
