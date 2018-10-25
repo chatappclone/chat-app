@@ -44,7 +44,7 @@ class App extends React.Component {
       this.setState({
         currentUser: currentUser
       });
-      fetch(`http://localhost:8080/users/${this.state.user.id}/rooms`)
+      fetch(`/users/${this.state.user.id}/rooms`)
         .then(response => response.json())
         .then(result => {
           if (result.length === 0) {
@@ -135,15 +135,15 @@ class App extends React.Component {
 
     return (
       <div className="page">
-        {this.state.currentView === 'login' && 
+        {this.state.currentView === 'login' &&
         <Login
           receiveCreateUser={this.receiveCreateUser}
           receiveUserLogin={this.receiveUserLogin} />}
-        {this.state.currentView === "previews" && 
+        {this.state.currentView === "previews" &&
         <RoomPreviews
           roomList={this.state.roomList}
           receiveHandleCurrentRoom={this.receiveHandleCurrentRoom} />}
-        {this.state.currentView === "chatRoom" && 
+        {this.state.currentView === "chatRoom" &&
         <ChatRoom
           user={this.state.user}
           currentUser={this.state.currentUser}
