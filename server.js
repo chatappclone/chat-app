@@ -53,7 +53,7 @@ fetch(process.env.CHATKIT_TOKEN_PROVIDER_URL, {
 
 // ROUTES //
 
-// Root 
+// Root
 app.get("/", function(req, res) {
   res.render("index");
 });
@@ -106,7 +106,7 @@ app.post("/api/create-user", (req, res) => {
   });
 });
 
-// Create new room 
+// Create new room
 app.post("/api/new-room", (req, res) => {
   const { creatorId, name } = req.body;
   chatkit
@@ -143,6 +143,7 @@ app.get("/users/:userId/rooms", (req, res) => {
 });
 
 // Start listening
-app.listen(8080, function() {
-  console.log("Listening on port 8080");
+const port = process.env.PORT || 8080;
+app.listen( port, function(){
+  console.log(`Listening on port number ${port}`);
 });
