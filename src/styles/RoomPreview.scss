@@ -1,1 +1,63 @@
 @import 'defaults';
+
+.room-preview {
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 65px;
+
+  &__avatar {
+    flex-grow: 2;
+    align-items: center;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__img {
+    border-radius: 50%;
+    max-width: 45px;
+    max-height: 45px;
+  }
+
+  &__preview-info {
+    flex-grow: 10;
+    height: 100%;
+    color: #8E8E92;
+    font-size: 0.8rem;
+    border-bottom: 1px solid #C8C7CB;
+    display: flex;
+    flex-direction: column;
+
+  }
+
+  &__room-name {
+    padding-top: 13px;
+    padding-right: 5px;
+  }
+
+  &__name {
+    color: #000000;
+    font-size: 1rem;
+  }
+
+  &__room-name {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__chevron {
+    flex-grow: 1;
+    height: 100%;
+    border-bottom: 1px solid #C8C7CB;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    color: #8E8E92;
+  }
+}
