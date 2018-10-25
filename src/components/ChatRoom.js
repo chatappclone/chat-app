@@ -27,6 +27,7 @@ class ChatRoom extends React.Component {
                 roomMessages: this.state.roomMessages.concat({
                   userId: message.senderId,
                   username: data.username,
+                  avatar: data.avatar,
                   text: message.text,
                   createdAt: message.createdAt,
                   id: message.id
