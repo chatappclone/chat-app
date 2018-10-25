@@ -85,17 +85,20 @@ app.post("/api/login", (req, res) => {
 app.post("/api/create-user", (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
+  const avatar = req.body.avatar;
   bcrypt.hash(password, saltRounds, function(err, hash) {
     db.one(
-      "INSERT INTO users (username, password) VALUES ($1, $2) RETURNING id, username",
-      [username, hash]
+      "INSERT INTO users (username, password, avatar_url) VALUES ($1, $2, $3) RETURNING id, username, avatar_url",
+      [username, hash, avatar]
     )
     .then(response => {
+      console.log(response)
       const userId = response.id.toString();
       chatkit
       .createUser({
         id: userId,
-        name: response.username
+        name: response.username,
+        avatarURL: response.avatar_url
       })
       .then(data => {
         console.log('new user created!', { id: data.id, name: data.name });
@@ -141,6 +144,16 @@ app.get("/users/:userId/rooms", (req, res) => {
   })
   .catch(error => console.log(error));
 });
+
+// Get user by ID
+app.get('/api/users/:userId', (req, res) => {
+  const userId = req.params.userId;
+  db.one(
+    'SELECT * FROM users WHERE id = $1', [userId]
+  )
+  .then(response => res.json({username: response.username, avatar: response.avatar_url}))
+  .catch(error => console.log(error));
+})
 
 // Start listening
 const port = process.env.PORT || 8080;
