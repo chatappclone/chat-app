@@ -1,19 +1,19 @@
 import React from "react";
-import '../styles/UserLogin.scss';
+import '../styles/Login.scss';
 
-class UserLogin extends React.Component {
+class Login extends React.Component {
+
   constructor() {
+
     super();
+
     this.handleLoginUsernameChange = this.handleLoginUsernameChange.bind(this);
     this.handleLoginPasswordChange = this.handleLoginPasswordChange.bind(this);
-    this.handleCreateUsernameChange = this.handleCreateUsernameChange.bind(
-      this
-    );
-    this.handleCreatePasswordChange = this.handleCreatePasswordChange.bind(
-      this
-    );
+    this.handleCreateUsernameChange = this.handleCreateUsernameChange.bind(this);
+    this.handleCreatePasswordChange = this.handleCreatePasswordChange.bind(this);
     this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
     this.handleCreateUserSubmit = this.handleCreateUserSubmit.bind(this);
+
     this.state = {
         login: {
             username: "",
@@ -50,7 +50,7 @@ class UserLogin extends React.Component {
             username: event.target.value,
             password: this.state.createUser.password
         }
-  })
+  });
 }
 
   handleCreatePasswordChange(event) {
@@ -64,25 +64,25 @@ class UserLogin extends React.Component {
 
   handleLoginSubmit(event) {
       event.preventDefault();
-      this.props.receiveUserLogin(this.state.login)
+      this.props.receiveUserLogin(this.state.login);
   }
 
   handleCreateUserSubmit(event) {
     event.preventDefault();
-    this.props.receiveCreateUser(this.state.createUser)
+    this.props.receiveCreateUser(this.state.createUser);
   }
 
   render() {
     return (
-      <div className='user-login'>
-        <div className='user-login__logo'></div>
-        <form className='user-login__existing' onSubmit={this.handleLoginSubmit}>
-          <div className='user-login__existing-title'>Existing users</div>
-          <div className='user-login__existing-username'>
+      <div className='login'>
+        <div className='login__logo'></div>
+        <form className='login__existing' onSubmit={this.handleLoginSubmit}>
+          <div className='login__existing-title'>Existing users</div>
+          <div className='login__existing-username'>
             <label>Username:</label>
             <input onChange={this.handleLoginUsernameChange} />
           </div>
-          <div className='user-login__existing-password'>
+          <div className='login__existing-password'>
             <label>Password:</label>
             <input
               onChange={this.handleLoginPasswordChange}
@@ -92,13 +92,13 @@ class UserLogin extends React.Component {
           </div>
           <button type="submit">Log in</button>
         </form>
-        <form className='user-login__new' onSubmit={this.handleCreateUserSubmit}>
-          <div className='user-login__new-title'>New users</div>
-          <div className='user-login__new-username'>
+        <form className='login__new' onSubmit={this.handleCreateUserSubmit}>
+          <div className='login__new-title'>New users</div>
+          <div className='login__new-username'>
             <label>Username:</label>
             <input onChange={this.handleCreateUsernameChange} />
           </div>
-          <div className='user-login__new-password'>
+          <div className='login__new-password'>
             <label>Password:</label>
             <input
               onChange={this.handleCreatePasswordChange}
@@ -114,4 +114,4 @@ class UserLogin extends React.Component {
   }
 }
 
-export default UserLogin;
+export default Login;

@@ -4,14 +4,15 @@ import '../styles/RoomPreview.scss';
 class RoomPreview extends React.Component {
 
   constructor () {
-    super()
 
-  this.handleClick = this.handleClick.bind(this);
+    super();
+
+    this.handleClick = this.handleClick.bind(this);
   }
 
-handleClick () {
-  this.props.receiveHandleCurrentRoom(this.props.room)
-}
+  handleClick () {
+    this.props.receiveHandleCurrentRoom(this.props.room);
+  }
 
   render() {
 
@@ -23,4 +24,5 @@ handleClick () {
     )
   }
 }
+
 export default RoomPreview;
