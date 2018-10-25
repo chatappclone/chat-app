@@ -21,7 +21,8 @@ class Login extends React.Component {
         },
         createUser: {
             username: "",
-            password: ""
+            password: "",
+            avatar: "https://secure.gravatar.com/avatar/0ba92bd0375beca9c95f958e7a331219"
         }
     };
   }
