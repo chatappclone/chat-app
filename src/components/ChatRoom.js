@@ -8,11 +8,17 @@ class ChatRoom extends React.Component {
   constructor() {
     super();
 
-    this.state = { roomMessages: [] };
+    this.state = {
+      roomMessages: [],
+      otherUser: {
+        userId: "",
+        username: "",
+        avatar: ""
+      }
+    };
 
     this.receiveSendMessage = this.receiveSendMessage.bind(this);
   }
-
 
   componentDidMount() {
     this.props.currentUser
@@ -20,20 +26,34 @@ class ChatRoom extends React.Component {
         roomId: this.props.currentRoom.id,
         hooks: {
           onNewMessage: message => {
+            const userId = this.props.user.id.toString()
             fetch(`/api/users/${message.senderId}`)
-            .then(response => response.json())
-            .then(data => {
-              this.setState({
-                roomMessages: this.state.roomMessages.concat({
-                  userId: message.senderId,
-                  username: data.username,
-                  avatar: data.avatar,
-                  text: message.text,
-                  createdAt: message.createdAt,
-                  id: message.id
-                })
+              .then(response => response.json())
+              .then(data => {
+                if (message.senderId !== userId) {
+
+                  this.setState({
+                    otherUser: Object.assign(this.state.otherUser, {
+                      userId: message.senderId,
+                      username: data.username,
+                      avatar: data.avatar
+                    })
+                  });
+                }
+                this.setState(
+                  {
+                    roomMessages: this.state.roomMessages.concat({
+                      userId: message.senderId,
+                      username: data.username,
+                      avatar: data.avatar,
+                      text: message.text,
+                      createdAt: message.createdAt,
+                      id: message.id
+                    })
+                  },
+                  () => console.log(this.state.otherUser)
+                );
               });
-            })
           }
         }
       })
@@ -60,12 +80,12 @@ class ChatRoom extends React.Component {
             </div>
             <div className="avatar">
               <img
-                src="https://avatars2.githubusercontent.com/u/398893?s=128"
+                src={this.state.otherUser.avatar}
                 alt="Avatar"
               />
             </div>
             <div className="name">
-              <span>Yetkin Ergun</span>
+              <span>{this.state.otherUser.username}</span>
               <span className="status">online</span>
             </div>
             <div className="actions more">

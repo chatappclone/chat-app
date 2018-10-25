@@ -82,7 +82,6 @@ class App extends React.Component {
   }
 
   receiveUserLogin(user) {
-    console.log(user);
     fetch("/api/login", {
       method: "POST",
       body: JSON.stringify(user),

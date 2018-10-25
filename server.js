@@ -70,7 +70,6 @@ app.post("/api/login", (req, res) => {
       bcrypt.compare(password, user.password, function(err, result) {
         if (result === true) {
           res.json({status: 'OK', id: user.id, username: user.username});
-          console.log(user);
         } else {
           res.send("Incorrect Password");
           console.log("Incorrect Password");
@@ -92,7 +91,6 @@ app.post("/api/create-user", (req, res) => {
       [username, hash, avatar]
     )
     .then(response => {
-      console.log(response)
       const userId = response.id.toString();
       chatkit
       .createUser({
@@ -101,7 +99,6 @@ app.post("/api/create-user", (req, res) => {
         avatarURL: response.avatar_url
       })
       .then(data => {
-        console.log('new user created!', { id: data.id, name: data.name });
         res.json({ status: 'OK', id: data.id, name: data.name });
       });
     })
