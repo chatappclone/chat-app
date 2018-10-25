@@ -15,9 +15,9 @@ class RoomPreviews extends React.Component {
     return (
       <div>
         <nav className="room-previews__nav">
-          <div><p>Edit</p></div>
-          <div><h3>Chat</h3></div>
-          <div><p>New</p></div>
+          <div className="room-previews__edit">Edit</div>
+          <div><h4>Chats</h4></div>
+          <div className="room-previews__new"><i className="zmdi zmdi-border-color" /></div>
         </nav>
         <div className="room-previews__room-list">
           {this.props.roomList.map(room => <RoomPreview key={room.id} room={room} receiveHandleCurrentRoom={this.props.receiveHandleCurrentRoom}/>)}
