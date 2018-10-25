@@ -11,11 +11,19 @@ class RoomPreviews extends React.Component {
   }
 
   render() {
-    
+
     return (
       <div>
-        {this.props.roomList.map(room => <RoomPreview key={room.id} room={room} receiveHandleCurrentRoom={this.props.receiveHandleCurrentRoom}/>)}
+        <nav className="room-previews__nav">
+          <div><p>Edit</p></div>
+          <div><h3>Chat</h3></div>
+          <div><p>New</p></div>
+        </nav>
+        <div className="room-previews__room-list">
+          {this.props.roomList.map(room => <RoomPreview key={room.id} room={room} receiveHandleCurrentRoom={this.props.receiveHandleCurrentRoom}/>)}
+        </div>
       </div>
+
     )
   }
 }

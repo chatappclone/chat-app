@@ -1,1 +1,19 @@
 @import 'defaults';
+
+.room-previews {
+  width: 100%;
+  height: 100vh;
+  font-size: 0.5rem;
+
+  &__nav {
+    background: #dfdfdf;
+    width: 100%;
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__room-list {
+
+  }
+}

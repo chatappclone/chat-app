@@ -1,1 +1,28 @@
 @import 'defaults';
+
+.room-preview {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  max-height: 80px;
+}
+
+.room-preview__img {
+  border-radius: 50%;
+  max-width: 40px;
+  max-height: auto;
+}
+
+.room-preview__preview-info {
+  border-bottom: 1px solid grey;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.room-preview__room-details {
+
+}
+.room-preview__name {
+  display: inline-block;
+}
