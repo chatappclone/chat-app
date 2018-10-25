@@ -26,10 +26,12 @@ class Messages extends React.Component {
   }
 
   render() {
-
+    
     return (
       <div className="conversation-container" ref={this.conversationRef}>
-        {this.props.roomMessages.map(message => <Message key={message.id} message={message}/>)}
+        {this.props.roomMessages
+        .filter(message => !isNaN(message.userId))
+        .map(message => <Message key={message.id} message={message} currentUser={this.props.currentUser}/>)}
       </div>
     )
   }

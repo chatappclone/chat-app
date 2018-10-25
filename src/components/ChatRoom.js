@@ -13,6 +13,7 @@ class ChatRoom extends React.Component {
     this.receiveSendMessage = this.receiveSendMessage.bind(this);
   }
 
+
   componentDidMount() {
     this.props.currentUser
       .subscribeToRoom({
@@ -83,6 +84,23 @@ class ChatRoom extends React.Component {
             />
             <Compose receiveSendMessage={this.receiveSendMessage} />
           </div>
+          <div className="actions more">
+            <i className="zmdi zmdi-more-vert"></i>
+          </div>
+          <div className="actions attachment">
+            <i className="zmdi zmdi-attachment-alt"></i>
+          </div>
+          <div className="actions">
+            <i className="zmdi zmdi-phone"></i>
+          </div>
+        </div>
+        <div className="conversation">
+          <Messages
+            currentUser={this.props.currentUser}
+            currentRoom={this.props.currentRoom}
+            roomMessages={this.state.roomMessages}/>
+          <Compose receiveSendMessage={this.receiveSendMessage}/>
+
         </div>
       </div>
     );
