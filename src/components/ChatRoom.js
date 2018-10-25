@@ -51,8 +51,7 @@ class ChatRoom extends React.Component {
                       createdAt: message.createdAt,
                       id: message.id
                     })
-                  },
-                  () => console.log(this.state.otherUser)
+                  }
                 );
               });
             }
@@ -65,7 +64,6 @@ class ChatRoom extends React.Component {
   }
 
   receiveSendMessage(messageText) {
-    console.log("message text", messageText);
     this.props.currentUser.sendMessage({
       text: messageText,
       roomId: this.props.currentRoom.id
