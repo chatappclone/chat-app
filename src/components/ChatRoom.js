@@ -55,7 +55,7 @@ class ChatRoom extends React.Component {
       <div className="chat">
         <div className="chat-container">
           <div className="user-bar">
-            <div className="back">
+            <div className="back" onClick={()=>this.props.goBack()}>
               <i className="zmdi zmdi-arrow-left" />
             </div>
             <div className="avatar">
