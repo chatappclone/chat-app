@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 // Database
 const pgp = require("pg-promise")();
 const db = pgp({
-  host: "localhost",
+  host: process.env.DB_HOST,
   port: 5432,
   database: process.env.TABLE_NAME,
   user: process.env.TABLE_USERNAME,
