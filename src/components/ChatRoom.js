@@ -8,12 +8,7 @@ class ChatRoom extends React.Component {
     super();
 
     this.state = {
-      roomMessages: [],
-      otherUser: {
-        userId: "",
-        username: "",
-        avatar: ""
-      }
+      roomMessages: []
     };
 
     this.receiveSendMessage = this.receiveSendMessage.bind(this);
@@ -25,37 +20,20 @@ class ChatRoom extends React.Component {
         roomId: this.props.currentRoom.id,
         hooks: {
           onNewMessage: message => {
-            const userId = this.props.user.id.toString();
             if (!isNaN(message.senderId)) {
-            fetch(`/api/users/${message.senderId}`)
-              .then(response => response.json())
-              .then(data => {
-                if (message.senderId !== userId) {
-                  this.setState({
-                    otherUser: Object.assign(this.state.otherUser, {
-                      userId: message.senderId,
-                      username: data.username,
-                      avatar: data.avatar
-                    })
-                  });
+              this.setState(
+                {
+                  roomMessages: this.state.roomMessages.concat({
+                    userId: message.senderId,
+                    text: message.text,
+                    createdAt: message.createdAt,
+                    id: message.id
+                  })
                 }
-                this.setState(
-                  {
-                    roomMessages: this.state.roomMessages.concat({
-                      userId: message.senderId,
-                      username: data.username,
-                      avatar: data.avatar,
-                      text: message.text,
-                      createdAt: message.createdAt,
-                      id: message.id
-                    })
-                  }
-                );
-              });
-            }
+              );
+            }}
           }
-        }
-      })
+        })
       .catch(error => {
         console.error("error:", error);
       });
@@ -71,8 +49,7 @@ class ChatRoom extends React.Component {
   render() {
     const roomId = this.props.currentRoom.id;
     const roomMap = this.props.roomMap.filter(item => item.roomId === roomId);
-    const otherUser = this.props.currentUser.users.filter(user => user.id === this.state.otherUser.userId);
-
+    const otherUser = this.props.currentUser.users.filter(user => parseInt(user.id,10) === roomMap[0].otherMembers[0].id);
     return (
 
       <div className="chat">
@@ -83,7 +60,7 @@ class ChatRoom extends React.Component {
             </div>
             <div className="avatar">
               <img
-                src={this.state.otherUser.avatar}
+                src={roomMap[0].otherMembers[0].avatar}
                 alt="Avatar"
               />
             </div>
