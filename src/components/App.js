@@ -33,23 +33,16 @@ class App extends React.Component {
     this.receiveNewChatView = this.receiveNewChatView.bind(this);
     this.receiveRoomPreviewsView = this.receiveRoomPreviewsView.bind(this);
     this.getNewChatUser = this.getNewChatUser.bind(this);
+    this.connectToChatManager = this.connectToChatManager.bind(this);
   }
 
   goBack() {
-    this.setState({currentAppView: "previews"});
+    this.setState({currentAppView: "previews"})
+    this.connectToChatManager();
   }
 
-  loadUserChat() {
-    const userId = this.state.user.id.toString();
-    const chatManager = new ChatManager({
-      instanceLocator: process.env.CHATKIT_INSTANCE_LOCATOR,
-      userId: userId,
-      tokenProvider: new TokenProvider({
-        url: process.env.CHATKIT_TOKEN_PROVIDER_URL
-      })
-    });
-
-    chatManager
+  connectToChatManager(){
+    this.state.chatManager
     .connect()
     .then(currentUser => {
       const otherUsers = currentUser.users.filter(user => user.id !== currentUser.id)
@@ -67,14 +60,13 @@ class App extends React.Component {
       return currentUser;
     })
     .then(currentUser => {
-      console.log(currentUser);
       this.state.availableRooms.forEach(room => {
         Promise.all(room.userIds.map(userId => fetch(`/api/users/${userId}`)
                                                .then(response => response.json())))
         .then(values => {
           const roomId = room.id;
           const roomMembers = values;
-          const otherMembers = roomMembers.filter(member => member.id !== parseInt(currentUser.id,10));
+          const otherMembers = roomMembers.filter(member => member.id !==currentUser.id);
           const roomMap = this.state.roomMap;
           this.setState({roomMap: roomMap.concat([{roomId,roomMembers,otherMembers}])});
         });
@@ -82,11 +74,26 @@ class App extends React.Component {
     });
   }
 
+  loadUserChat() {
+    const userId = this.state.user.id.toString();
+    const chatManager = new ChatManager({
+      instanceLocator: process.env.CHATKIT_INSTANCE_LOCATOR,
+      userId: userId,
+      tokenProvider: new TokenProvider({
+        url: process.env.CHATKIT_TOKEN_PROVIDER_URL
+      })
+    });
+    this.setState({
+      chatManager,
+    }, () => this.connectToChatManager())
+  }
+  
   receiveHandleCurrentRoom(currentRoom) {
     this.setState({
       currentRoom,
       currentAppView: "chatRoom"
     });
+    this.connectToChatManager()
   }
 
   receiveNewChatView(){
@@ -159,18 +166,20 @@ class App extends React.Component {
     })
     .then(room => {
       console.log('created new room!');
+      console.log(room);
       return room;
     })
     .then(room => {
+      const roomMap = this.state.roomMap.concat([{roomId: room.id,roomMembers: room.users,otherMembers: room.users.filter(user => user.id !== this.state.currentUser.id)}]);
+      
       this.setState({
+      roomMap,  
       currentRoom: room,
       currentAppView: "chatRoom"
     })})
     .catch(error => console.log(error));
   }
-  // const roomMap = this.state.roomMap;
-  // this.setState({roomMap: roomMap.concat([{roomId,roomMembers,otherMembers}])});
-
+  
   render() {
     console.log(this.state.currentUser);
 
@@ -198,7 +207,8 @@ class App extends React.Component {
           goBack={this.goBack}
           user={this.state.user}
           currentUser={this.state.currentUser}
-          currentRoom={this.state.currentRoom} />}
+          currentRoom={this.state.currentRoom} 
+          connectToChatManager={this.connectToChatManager}/>}
       </div>
     );
   }
