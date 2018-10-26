@@ -12,12 +12,12 @@ function RoomPreview({room, roomMap, receiveHandleCurrentRoom}) {
       <div className="room-preview" onClick={() => receiveHandleCurrentRoom(room)}>
         <div className="room-preview__avatar">
           {myRoomMap.length && 
-          <img className="room-preview__img" src={myRoomMap[0].otherMembers[0].avatar} />}
+          <img className="room-preview__img" src={myRoomMap[0].otherMembers[0].avatarURL} />}
         </div>
         <div className="room-preview__preview-info">
             <div className="room-preview__room-name">
             {myRoomMap.length && 
-              <b className="room-preview__name">{myRoomMap[0].otherMembers.map(member => member.username).join(', ')}</b>}
+              <b className="room-preview__name">{myRoomMap[0].otherMembers.map(member => member.name).join(', ')}</b>}
               <p>{roomUpdatedAt}</p>
             </div>
             <div className="room-preview__preview-text">

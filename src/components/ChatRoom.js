@@ -15,6 +15,7 @@ class ChatRoom extends React.Component {
   }
 
   componentDidMount() {
+    this.props.connectToChatManager();
     this.props.currentUser
       .subscribeToRoom({
         roomId: this.props.currentRoom.id,
@@ -49,7 +50,7 @@ class ChatRoom extends React.Component {
   render() {
     const roomId = this.props.currentRoom.id;
     const roomMap = this.props.roomMap.filter(item => item.roomId === roomId);
-    const otherUser = this.props.currentUser.users.filter(user => parseInt(user.id,10) === roomMap[0].otherMembers[0].id);
+    const otherUser = this.props.currentUser.users.filter(user => user.id === roomMap[0].otherMembers[0].id);
     return (
 
       <div className="chat">
@@ -60,13 +61,13 @@ class ChatRoom extends React.Component {
             </div>
             <div className="avatar">
               <img
-                src={roomMap[0].otherMembers[0].avatar}
+                src={roomMap[0].otherMembers[0].avatarURL}
                 alt="Avatar"
               />
             </div>
             <div className="name">
               {roomMap.length && 
-              <span>{roomMap[0].otherMembers.map(member => member.username).join(', ')}</span>}
+              <span>{roomMap[0].otherMembers.map(member => member.name).join(', ')}</span>}
               {otherUser.length &&
               <span className="status">{otherUser[0].presence.state}</span>}
             </div>
