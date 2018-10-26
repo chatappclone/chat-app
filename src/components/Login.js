@@ -14,6 +14,8 @@ class Login extends React.Component {
     this.handleCreateAvatarChange = this.handleCreateAvatarChange.bind(this);
     this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
     this.handleCreateUserSubmit = this.handleCreateUserSubmit.bind(this);
+    this.handleSignupView = this.handleSignupView.bind(this);
+    this.handleLoginView = this.handleLoginView.bind(this);
 
     this.state = {
         login: {
@@ -24,7 +26,8 @@ class Login extends React.Component {
             username: "",
             password: "",
             avatar: ""
-        }
+        },
+        login_view: "login"
     };
   }
 
@@ -86,50 +89,74 @@ class Login extends React.Component {
     this.props.receiveCreateUser(this.state.createUser);
   }
 
+  handleSignupView(){
+    this.setState({
+      login_view: "signup"
+    })
+  }
+  handleLoginView(){
+    this.setState({
+      login_view: "login"
+    })
+  }
+
   render() {
     return (
       <div className='login'>
         <div className='login__logo'></div>
-        <form className='login__existing' onSubmit={this.handleLoginSubmit}>
-          <div className='login__existing-title'>Existing users</div>
-          <div className='login__existing-username'>
-            <label>Username:</label>
-            <input onChange={this.handleLoginUsernameChange} />
-          </div>
-          <div className='login__existing-password'>
-            <label>Password:</label>
-            <input
-              onChange={this.handleLoginPasswordChange}
-              type="password"
-              minLength="3"
-            />
-          </div>
-          <button type="submit">Log in</button>
-        </form>
-        <form className='login__new' onSubmit={this.handleCreateUserSubmit}>
-          <div className='login__new-title'>New users</div>
-          <div className='login__new-username'>
-            <label>Username:</label>
-            <input onChange={this.handleCreateUsernameChange} />
-          </div>
-          <div className='login__new-password'>
-            <label>Password:</label>
-            <input
-              onChange={this.handleCreatePasswordChange}
-              type="password"
-              minLength="3"
-              placeholder="3 characters minimum"
-            />
-          </div>
-          <div className='login__new-avatar'>
-            <label>Avatar URL:</label>
-            <input
-              onChange={this.handleCreateAvatarChange}
-              placeholder="Link to avatar"
-            />
-          </div>
-          <button type="submit">Create user</button>
-        </form>
+
+        {this.state.login_view === 'login' &&
+        <div className="login__box">
+          <form className='login__existing' onSubmit={this.handleLoginSubmit}>
+            <div className='login__existing-title'><h4>Login</h4></div>
+            <div className='login__existing-username'>
+              <input onChange={this.handleLoginUsernameChange} placeholder="Username" />
+            </div>
+            <div className='login__existing-password'>
+              <input
+                onChange={this.handleLoginPasswordChange}
+                type="password"
+                minLength="3"
+                placeholder="Password"
+              />
+            </div>
+            <button type="submit">Log in</button>
+            <div className="login__view-switch"></div>
+            <p>No Account?</p><div onClick={this.handleSignupView}>Sign up</div>
+          </form>
+        </div>
+      }
+
+
+        {this.state.login_view === 'signup' &&
+        <div className="login__box">
+          <form className='login__new' onSubmit={this.handleCreateUserSubmit}>
+            <div className='login__new-title'><h4>Sign up</h4></div>
+            <div className='login__new-username'>
+
+              <input onChange={this.handleCreateUsernameChange} placeholder="Username" />
+            </div>
+            <div className='login__new-password'>
+              <input
+                onChange={this.handleCreatePasswordChange}
+                type="password"
+                minLength="3"
+                placeholder="Password"
+              />
+            </div>
+            <div className='login__new-avatar'>
+              <input
+                onChange={this.handleCreateAvatarChange}
+                placeholder="Link to avatar"
+              />
+            </div>
+            <button type="submit">Create user</button>
+            <p>Already have an account?</p><div onClick={this.handleLoginView}>Sign in</div>
+          </form>
+        </div>
+      }
+
+
       </div>
     );
   }
