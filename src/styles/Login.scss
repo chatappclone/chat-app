@@ -45,6 +45,10 @@
     color: #63B758;
   }
 
+  &__view-switch {
+    padding-top: 16px;
+  }
+
   &__input {
     display: flex;
     overflow: hidden;
@@ -86,7 +90,7 @@
 
   margin: 10px 0px 10px 0px;
   padding: 12px 12px;
-  width: auto;
+  width: 100%;
 
   cursor: pointer;
   user-select: none;

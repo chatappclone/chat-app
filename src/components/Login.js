@@ -122,8 +122,10 @@ class Login extends React.Component {
               />
             </div>
             <button type="submit" className="login__button">Log in</button>
-            <div className="login__view-switch"></div>
-            <p>No Account?</p><div className="login__switch" onClick={this.handleSignupView}>Sign up</div>
+            <div className="login__view-switch">
+              <p>No Account?</p><div className="login__switch" onClick={this.handleSignupView}>Sign up</div>
+            </div>
+
           </form>
         </div>
       }
@@ -153,7 +155,9 @@ class Login extends React.Component {
               />
             </div>
             <button type="submit" className="login__button">Create user</button>
-            <p>Already have an account?</p><div className="login__switch" onClick={this.handleLoginView}>Sign in</div>
+            <div className="login__view-switch">
+              <p>Already have an account?</p><div className="login__switch" onClick={this.handleLoginView}>Sign in</div>
+            </div>
           </form>
         </div>
       }
