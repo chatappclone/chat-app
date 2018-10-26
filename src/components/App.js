@@ -3,7 +3,7 @@ import { ChatManager, TokenProvider } from "@pusher/chatkit";
 import RoomPreviews from "./RoomPreviews";
 import ChatRoom from "./ChatRoom";
 import Login from "./Login";
-import NewChat from "./NewChat";
+import NewChats from "./NewChats";
 import "../styles/App.scss";
 
 class App extends React.Component {
@@ -30,6 +30,8 @@ class App extends React.Component {
     this.receiveUserLogin = this.receiveUserLogin.bind(this);
     this.loadUserChat = this.loadUserChat.bind(this);
     this.goBack = this.goBack.bind(this);
+    this.receiveNewChatView = this.receiveNewChatView.bind(this);
+    this.getNewChatUser = this.getNewChatUser.bind(this);
   }
 
   goBack() {
@@ -49,9 +51,11 @@ class App extends React.Component {
     chatManager
     .connect()
     .then(currentUser => {
+      const otherUsers = currentUser.users.filter(user => user.id !== currentUser.id)
       this.setState({
-        currentUser: currentUser,
-        availableRooms: currentUser.rooms
+        currentUser,
+        availableRooms: currentUser.rooms,
+        otherUsers
       });
       return currentUser;
     })
@@ -71,8 +75,7 @@ class App extends React.Component {
           const roomMembers = values;
           const otherMembers = roomMembers.filter(member => member.id !== parseInt(currentUser.id,10));
           const roomMap = this.state.roomMap;
-          this.setState({otherUsers: otherMembers,
-                         roomMap: roomMap.concat([{roomId,roomMembers,otherMembers}])});
+          this.setState({roomMap: roomMap.concat([{roomId,roomMembers,otherMembers}])});
         });
       }); 
     });
@@ -84,6 +87,13 @@ class App extends React.Component {
       currentAppView: "chatRoom"
     });
   }
+
+  receiveNewChatView(){
+    this.setState({
+      currentAppView: "newChat"
+    })
+  }
+
 
   receiveUserLogin(user) {
     fetch("/api/login", {
@@ -134,6 +144,26 @@ class App extends React.Component {
     });
   }
 
+  getNewChatUser(user) {
+    this.state.currentUser.createRoom({
+      name: `${this.state.currentUser.name}, ${user.name}`,
+      private: false,
+      addUserIds: [user.id]
+    })
+    .then(room => {
+      console.log('created new room!');
+      return room;
+    })
+    .then(room => {
+      this.setState({
+      currentRoom: room,
+      currentAppView: "chatRoom"
+    })})
+    .catch(error => console.log(error));
+  }
+  // const roomMap = this.state.roomMap;
+  // this.setState({roomMap: roomMap.concat([{roomId,roomMembers,otherMembers}])});
+
   render() {
     console.log(this.state.currentUser);
 
@@ -147,10 +177,13 @@ class App extends React.Component {
         <RoomPreviews
           roomMap={this.state.roomMap}
           rooms={this.state.availableRooms}
-          receiveHandleCurrentRoom={this.receiveHandleCurrentRoom} />}
+          receiveHandleCurrentRoom={this.receiveHandleCurrentRoom}
+          receiveNewChatView={this.receiveNewChatView} />}
         {this.state.currentAppView === "newChat" &&
-        <NewChat 
-          otherUsers={this.state.otherUsers}/>}  
+        <NewChats 
+          otherUsers={this.state.otherUsers}
+          getNewChatUser={this.getNewChatUser}
+          />}  
         {this.state.currentAppView === "chatRoom" &&
         <ChatRoom
           roomMap={this.state.roomMap}
