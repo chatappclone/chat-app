@@ -20,8 +20,8 @@
 
   &__box {
     background-color: white;
-    width: 80%;
-    height: 60%;
+    width: 280px;
+    padding: 20px 0 20px 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -32,7 +32,103 @@
 
   }
 
-  &__new-title {
-    font-size: 20pt;
+  &__title {
+    font-size: 1.5rem;
+  }
+
+  &__username {
+    width: 80%;
+  }
+
+  &__switch {
+    text-decoration: underline;
+    color: #63B758;
+  }
+
+  &__input {
+    display: flex;
+    overflow: hidden;
+
+    margin: 10px 0px 10px 0px;
+    padding: 12px 12px;
+    width: 200px;
+
+    cursor: pointer;
+    user-select: none;
+    transition: all 150ms linear;
+    white-space: nowrap;
+    text-decoration: none !important;
+    text-transform: none;
+    text-transform: capitalize;
+
+    color: #232121;
+    background-color: #fff;
+    border: 1px solid #F7F7F7;
+    border-radius: 3px;
+
+    font-weight: 500;
+    line-height: 1.0;
+
+    -webkit-appearance: none;
+    -moz-appearance:    none;
+    appearance:         none;
+
+    justify-content: center;
+    align-items: center;
+
+
+    box-shadow: 2px 5px 10px var(--color-smoke);
+  }
+
+  &__button {
+  display: flex;
+  overflow: hidden;
+
+  margin: 10px 0px 10px 0px;
+  padding: 12px 12px;
+  width: auto;
+
+  cursor: pointer;
+  user-select: none;
+  transition: all 150ms linear;
+  text-align: center;
+  white-space: nowrap;
+  text-decoration: none !important;
+  text-transform: none;
+  text-transform: capitalize;
+
+  color: #fff;
+  background-color: #63B758;
+  border: 0 none;
+  border-radius: 3px;
+
+  font-weight: 600;
+  line-height: 1.0;
+
+  -webkit-appearance: none;
+  -moz-appearance:    none;
+  appearance:         none;
+
+  justify-content: center;
+  align-items: center;
+
+
+  box-shadow: 2px 5px 10px var(--color-smoke);
+
+  &:hover {
+    transition: all 150ms linear;
+
+    opacity: .85;
+  }
+
+  &:active {
+    transition: all 150ms linear;
+    opacity: .75;
+  }
+
+  &:focus {
+    outline: 1px dotted #25D366;
+    outline-offset: -4px;
+  }
   }
 }
