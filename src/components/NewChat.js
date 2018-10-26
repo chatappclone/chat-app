@@ -21,7 +21,7 @@ class NewChat extends React.Component {
 
               <b className="user-preview__name">{this.props.user.name}</b>
             </div>
-            <div>
+            <div className="user-preview__presence">
               {this.props.user.presence.state}
             </div>
         </div>

@@ -12,16 +12,18 @@
     height: 45px;
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: center;
   }
 
   &__edit {
     color: #357AF6;
-    font-size: 0.95rem;
+    font-size: 0.85rem;
+    padding-right: 110px;
   }
 
   &__new {
     color: #357AF6;
-    font-size: 0.95rem;
+    font-size: 0.85rem;
+    padding-left: 90px;
   }
 }

@@ -3,17 +3,18 @@
 .user-preview {
 
   display: flex;
-  justify-content: space-around;
-  align-items: center;
-  height: 65px;
+  height: 63px;
+  width: 100%;
+  padding-top: 2px;
 
   &__avatar {
-    flex-grow: 2;
+    // flex-grow: 2;
     align-items: center;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    min-width: 70px;
   }
 
   &__img {
@@ -23,24 +24,25 @@
   }
 
   &__preview-info {
-    flex-grow: 10;
+    // flex-grow: 10;
     height: 100%;
     color: #8E8E92;
     font-size: 0.8rem;
-    border-bottom: 1px solid #C8C7CB;
+    border-bottom: 1px solid #E9E9E9;
     display: flex;
     flex-direction: column;
+    min-width: 225px;
 
   }
 
   &__room-name {
-    padding-top: 13px;
+    padding-top: 10px;
     padding-right: 5px;
   }
 
   &__name {
     color: #000000;
-    font-size: 1rem;
+    font-size: 0.90rem;
   }
 
   &__room-name {
@@ -50,14 +52,19 @@
     justify-content: space-between;
   }
 
+  &__presence {
+    padding-top: 4px;
+  }
+
   &__chevron {
-    flex-grow: 1;
+    // flex-grow: 1;
     height: 100%;
-    border-bottom: 1px solid #C8C7CB;
+    border-bottom: 1px solid #E9E9E9;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 1.5rem;
     color: #8E8E92;
+    min-width: 25px;
   }
 }

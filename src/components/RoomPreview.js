@@ -7,16 +7,16 @@ function RoomPreview({room, roomMap, receiveHandleCurrentRoom}) {
   const updatedAt = new Date(room.updatedAt);
   const roomUpdatedAt = `${updatedAt.getHours().toString().padStart(2,'0')}:${updatedAt.getMinutes().toString().padStart(2,'0')}`;
   const myRoomMap = roomMap.filter(item => item.roomId === roomId);
-  
+
   return (
       <div className="room-preview" onClick={() => receiveHandleCurrentRoom(room)}>
         <div className="room-preview__avatar">
-          {myRoomMap.length && 
+          {myRoomMap.length &&
           <img className="room-preview__img" src={myRoomMap[0].otherMembers[0].avatarURL} />}
         </div>
         <div className="room-preview__preview-info">
             <div className="room-preview__room-name">
-            {myRoomMap.length && 
+            {myRoomMap.length &&
               <b className="room-preview__name">{myRoomMap[0].otherMembers.map(member => member.name).join(', ')}</b>}
               <p>{roomUpdatedAt}</p>
             </div>
