@@ -55,7 +55,7 @@ class App extends React.Component {
     })
     .then(currentUser => {
       if (this.state.availableRooms.length === 0) {
-        currentUser.joinRoom({ roomId: 19371557 });
+        currentUser.joinRoom({ roomId: 19371632 });
       }
       return currentUser;
     })
