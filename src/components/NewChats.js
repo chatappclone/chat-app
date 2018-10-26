@@ -19,7 +19,7 @@ class NewChats extends React.Component {
     return(
       <div>
         <nav className="user-previews__nav">
-          <div className="user-previews__edit">Edit</div>
+          <div className="user-previews__edit">    </div>
           <div><h4>New Chat</h4></div>
           <div className="user-previews__new" onClick={this.handleCancelClick}>Cancel</div>
         </nav>

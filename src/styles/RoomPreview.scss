@@ -55,7 +55,6 @@
 
   &__chevron {
     // flex-grow: 1;
-    min-width: 25px;
     height: 100%;
     border-bottom: 1px solid #E9E9E9;
     display: flex;
@@ -63,5 +62,6 @@
     align-items: center;
     font-size: 1.5rem;
     color: #8E8E92;
+    min-width: 25px;
   }
 }
