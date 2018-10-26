@@ -31,6 +31,7 @@ class App extends React.Component {
     this.loadUserChat = this.loadUserChat.bind(this);
     this.goBack = this.goBack.bind(this);
     this.receiveNewChatView = this.receiveNewChatView.bind(this);
+    this.receiveRoomPreviewsView = this.receiveRoomPreviewsView.bind(this);
     this.getNewChatUser = this.getNewChatUser.bind(this);
     this.connectToChatManager = this.connectToChatManager.bind(this);
   }
@@ -69,10 +70,9 @@ class App extends React.Component {
           const roomMap = this.state.roomMap;
           this.setState({roomMap: roomMap.concat([{roomId,roomMembers,otherMembers}])});
         });
-      }); 
+      });
     });
   }
-
 
   loadUserChat() {
     const userId = this.state.user.id.toString();
@@ -99,6 +99,12 @@ class App extends React.Component {
   receiveNewChatView(){
     this.setState({
       currentAppView: "newChat"
+    })
+  }
+
+  receiveRoomPreviewsView(){
+    this.setState({
+      currentAppView: "previews"
     })
   }
 
@@ -190,10 +196,11 @@ class App extends React.Component {
           receiveHandleCurrentRoom={this.receiveHandleCurrentRoom}
           receiveNewChatView={this.receiveNewChatView} />}
         {this.state.currentAppView === "newChat" &&
-        <NewChats 
+        <NewChats
           otherUsers={this.state.otherUsers}
           getNewChatUser={this.getNewChatUser}
-          />}  
+          receiveRoomPreviewsView={this.receiveRoomPreviewsView}
+          />}
         {this.state.currentAppView === "chatRoom" &&
         <ChatRoom
           roomMap={this.state.roomMap}
