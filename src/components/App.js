@@ -3,6 +3,7 @@ import { ChatManager, TokenProvider } from "@pusher/chatkit";
 import RoomPreviews from "./RoomPreviews";
 import ChatRoom from "./ChatRoom";
 import Login from "./Login";
+import NewChat from "./NewChat";
 import "../styles/App.scss";
 
 class App extends React.Component {
@@ -12,10 +13,12 @@ class App extends React.Component {
     super();
 
     this.state = {
-      currentView: "login",  //login -> previews -> chatRoom
-      roomList: [],
+      currentAppView: "login",  //login -> previews -> newChat -> chatRoom
+      currentUser: {},
+      otherUsers: [],
       currentRoom: {},
-      currentUser: "",
+      availableRooms: [],
+      roomMap: [],
       user: {
         id: "",
         username: ""
@@ -30,7 +33,7 @@ class App extends React.Component {
   }
 
   goBack() {
-    this.setState({currentView: "previews"});
+    this.setState({currentAppView: "previews"});
   }
 
   loadUserChat() {
@@ -47,42 +50,38 @@ class App extends React.Component {
     .connect()
     .then(currentUser => {
       this.setState({
-        currentUser: currentUser
+        currentUser: currentUser,
+        availableRooms: currentUser.rooms
       });
-      fetch(`/users/${this.state.user.id}/rooms`)
-        .then(response => response.json())
-        .then(result => {
-          if (result.length === 0) {
-            currentUser
-              .joinRoom({ roomId: 19371557 })
-              .then(room => {
-                this.setState(
-                  {
-                    roomList: [room]
-                  }
-                );
-              })
-              .catch(err => {
-                console.log(`Error joining room ${someRoomID}: ${err}`);
-              });
-          } else {
-            this.setState(
-              {
-                roomList: result
-              }
-            );
-          }
-        });
+      return currentUser;
     })
-    .catch(err => {
-      console.log("Error on connection", err);
+    .then(currentUser => {
+      if (this.state.availableRooms.length === 0) {
+        currentUser.joinRoom({ roomId: 19371557 });
+      }
+      return currentUser;
+    })
+    .then(currentUser => {
+      console.log(currentUser);
+      this.state.availableRooms.forEach(room => {
+        Promise.all(room.userIds.map(userId => fetch(`/api/users/${userId}`)
+                                               .then(response => response.json())))
+        .then(values => {
+          const roomId = room.id;
+          const roomMembers = values;
+          const otherMembers = roomMembers.filter(member => member.id !== parseInt(currentUser.id,10));
+          const roomMap = this.state.roomMap;
+          this.setState({otherUsers: otherMembers,
+                         roomMap: roomMap.concat([{roomId,roomMembers,otherMembers}])});
+        });
+      }); 
     });
   }
-
+  
   receiveHandleCurrentRoom(currentRoom) {
     this.setState({
       currentRoom,
-      currentView: "chatRoom"
+      currentAppView: "chatRoom"
     });
   }
 
@@ -102,7 +101,7 @@ class App extends React.Component {
               id: data.id,
               username: data.username
             },
-            currentView: 'previews'
+            currentAppView: 'previews'
           },
           () => this.loadUserChat()
         );
@@ -127,7 +126,7 @@ class App extends React.Component {
               id: data.id,
               username: data.username
             },
-            currentView: 'previews'
+            currentAppView: 'previews'
           },
           () => this.loadUserChat()
         );
@@ -136,19 +135,25 @@ class App extends React.Component {
   }
 
   render() {
+    console.log(this.state.currentUser);
 
     return (
       <div className="page">
-        {this.state.currentView === 'login' &&
+        {this.state.currentAppView === 'login' &&
         <Login
           receiveCreateUser={this.receiveCreateUser}
           receiveUserLogin={this.receiveUserLogin} />}
-        {this.state.currentView === "previews" &&
+        {this.state.currentAppView === "previews" &&
         <RoomPreviews
-          roomList={this.state.roomList}
+          roomMap={this.state.roomMap}
+          rooms={this.state.availableRooms}
           receiveHandleCurrentRoom={this.receiveHandleCurrentRoom} />}
-        {this.state.currentView === "chatRoom" &&
+        {this.state.currentAppView === "newChat" &&
+        <NewChat 
+          otherUsers={this.state.otherUsers}/>}  
+        {this.state.currentAppView === "chatRoom" &&
         <ChatRoom
+          roomMap={this.state.roomMap}
           goBack={this.goBack}
           user={this.state.user}
           currentUser={this.state.currentUser}

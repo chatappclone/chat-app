@@ -1,5 +1,4 @@
 import React from "react";
-import Title from "./Title";
 import Messages from "./Messages";
 import Compose from "./Compose";
 import "../styles/ChatRoom.scss";
@@ -32,7 +31,6 @@ class ChatRoom extends React.Component {
               .then(response => response.json())
               .then(data => {
                 if (message.senderId !== userId) {
-
                   this.setState({
                     otherUser: Object.assign(this.state.otherUser, {
                       userId: message.senderId,
@@ -71,7 +69,12 @@ class ChatRoom extends React.Component {
   }
 
   render() {
+    const roomId = this.props.currentRoom.id;
+    const roomMap = this.props.roomMap.filter(item => item.roomId === roomId);
+    const otherUser = this.props.currentUser.users.filter(user => user.id === this.state.otherUser.userId);
+
     return (
+
       <div className="chat">
         <div className="chat-container">
           <div className="user-bar">
@@ -85,8 +88,10 @@ class ChatRoom extends React.Component {
               />
             </div>
             <div className="name">
-              <span>{this.state.otherUser.username}</span>
-              <span className="status">online</span>
+              {roomMap.length && 
+              <span>{roomMap[0].otherMembers.map(member => member.username).join(', ')}</span>}
+              {otherUser.length &&
+              <span className="status">{otherUser[0].presence.state}</span>}
             </div>
             <div className="actions more">
               <i className="zmdi zmdi-more-vert" />

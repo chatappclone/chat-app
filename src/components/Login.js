@@ -11,6 +11,7 @@ class Login extends React.Component {
     this.handleLoginPasswordChange = this.handleLoginPasswordChange.bind(this);
     this.handleCreateUsernameChange = this.handleCreateUsernameChange.bind(this);
     this.handleCreatePasswordChange = this.handleCreatePasswordChange.bind(this);
+    this.handleCreateAvatarChange = this.handleCreateAvatarChange.bind(this);
     this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
     this.handleCreateUserSubmit = this.handleCreateUserSubmit.bind(this);
 
@@ -22,7 +23,7 @@ class Login extends React.Component {
         createUser: {
             username: "",
             password: "",
-            avatar: "https://secure.gravatar.com/avatar/0ba92bd0375beca9c95f958e7a331219"
+            avatar: ""
         }
     };
   }
@@ -50,7 +51,7 @@ class Login extends React.Component {
         createUser: {
             username: event.target.value,
             password: this.state.createUser.password,
-            avatar: "https://secure.gravatar.com/avatar/0ba92bd0375beca9c95f958e7a331219"
+            avatar: this.state.createUser.avatar
         }
   });
 }
@@ -60,7 +61,17 @@ class Login extends React.Component {
         createUser: {
             username: this.state.createUser.username,
             password: event.target.value,
-            avatar: "https://secure.gravatar.com/avatar/0ba92bd0375beca9c95f958e7a331219"
+            avatar: this.state.createUser.avatar
+        }
+    });
+  }
+
+  handleCreateAvatarChange(event) {
+    this.setState({
+        createUser: {
+            username: this.state.createUser.username,
+            password: this.state.createUser.password,
+            avatar: event.target.value
         }
     });
   }
@@ -108,6 +119,13 @@ class Login extends React.Component {
               type="password"
               minLength="3"
               placeholder="3 characters minimum"
+            />
+          </div>
+          <div className='login__new-avatar'>
+            <label>Avatar URL:</label>
+            <input
+              onChange={this.handleCreateAvatarChange}
+              placeholder="Link to avatar"
             />
           </div>
           <button type="submit">Create user</button>

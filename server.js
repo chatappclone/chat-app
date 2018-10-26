@@ -148,7 +148,7 @@ app.get('/api/users/:userId', (req, res) => {
   db.one(
     'SELECT * FROM users WHERE id = $1', [userId]
   )
-  .then(response => res.json({username: response.username, avatar: response.avatar_url}))
+  .then(response => res.json({id: response.id, username: response.username, avatar: response.avatar_url}))
   .catch(error => console.log(error));
 })
 
