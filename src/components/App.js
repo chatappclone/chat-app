@@ -71,8 +71,34 @@ class App extends React.Component {
           this.setState({roomMap: roomMap.concat([{roomId,roomMembers,otherMembers}])});
         });
       });
-    });
-  }
+      return currentUser;
+    })
+    .then(currentUser => {
+      console.log(this.state.availableRooms);
+      Promise.all(this.state.availableRooms.map(room => {
+        const id = room.id;
+        return new Promise((resolve,reject) => {
+          currentUser.subscribeToRoom({
+            roomId: id,
+            hooks: {
+              onNewMessage: message => {
+                resolve(message.text);
+              }
+            },
+            messageLimit: 1
+            });
+        })
+        .then(lastMsg => {
+          return Object.assign({}, room, {lastMsg: lastMsg});
+          }
+        )
+        
+        }))
+        .then(availableRooms => {
+          this.setState({availableRooms})
+        });
+      });
+    }
 
   loadUserChat() {
     const userId = this.state.user.id.toString();
