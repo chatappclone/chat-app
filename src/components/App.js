@@ -74,7 +74,6 @@ class App extends React.Component {
       return currentUser;
     })
     .then(currentUser => {
-      console.log(this.state.availableRooms);
       Promise.all(this.state.availableRooms.map(room => {
         const id = room.id;
         return new Promise((resolve,reject) => {
@@ -89,12 +88,20 @@ class App extends React.Component {
             });
         })
         .then(lastMsg => {
+          if (!lastMsg) {lastMsg = '';}
           return Object.assign({}, room, {lastMsg: lastMsg});
           }
         )
         
         }))
+
         .then(availableRooms => {
+          availableRooms.sort((a, b) => {
+            const newDate1 = new Date(a.updatedAt)
+            const newDate2 = new Date(b.updatedAt)
+            return newDate1 > newDate2 ? -1 : newDate1 < newDate2 ? 1 : 0
+          })
+          console.log(availableRooms);
           this.setState({availableRooms})
         });
       });
@@ -207,7 +214,6 @@ class App extends React.Component {
   }
   
   render() {
-    console.log(this.state.currentUser);
 
     return (
       <div className="page">
