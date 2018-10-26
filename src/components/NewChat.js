@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/Login.scss';
+import '../styles/NewChat.scss';
 
 class NewChat extends React.Component {
 
@@ -9,6 +9,27 @@ class NewChat extends React.Component {
 
   render(){
 
+    return (
+      
+    <div className="user-preview" onClick={() => this.props.getNewChatUser(this.props.user)}>
+        <div className="user-preview__avatar">
+          
+          <img className="user-preview__img" src={this.props.user.avatarURL} />
+        </div>
+        <div className="user-preview__preview-info">
+            <div className="user-preview__room-name">
+            
+              <b className="user-preview__name">{this.props.user.name}</b>
+            </div>
+        </div>
+        <div>
+          {this.props.user.presence.state}
+        </div>
+        <div className="user-preview__chevron">
+          <i className="zmdi zmdi-chevron-right" />
+        </div>
+      </div>
+    )
   }
 }
 
