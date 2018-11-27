@@ -55,7 +55,8 @@
     "pg-promise": "^8.5.1",
     "prop-types": "^15.6.2",
     "react": "^16.5.2",
-    "react-dom": "^16.5.2"
+    "react-dom": "^16.5.2",
+    "merge": ">=1.2.1"
   },
   "devDependencies": {
     "babel-jest": "^22.4.1",
