@@ -1,14 +1,15 @@
-import React from "react";
-import Messages from "./Messages";
-import Compose from "./Compose";
-import "../styles/ChatRoom.scss";
+import React from 'react';
+import PropTypes from 'prop-types';
+import Messages from './Messages';
+import Compose from './Compose';
+import '../styles/ChatRoom.scss';
 
 class ChatRoom extends React.Component {
   constructor() {
     super();
 
     this.state = {
-      roomMessages: []
+      roomMessages: [],
     };
 
     this.receiveSendMessage = this.receiveSendMessage.bind(this);
@@ -20,56 +21,53 @@ class ChatRoom extends React.Component {
       .subscribeToRoom({
         roomId: this.props.currentRoom.id,
         hooks: {
-          onNewMessage: message => {
-            if (!isNaN(message.senderId)) {
-              this.setState(
-                {
-                  roomMessages: this.state.roomMessages.concat({
-                    userId: message.senderId,
-                    text: message.text,
-                    createdAt: message.createdAt,
-                    id: message.id
-                  })
-                }
-              );
-            }}
-          }
-        })
-      .catch(error => {
-        console.error("error:", error);
+          onNewMessage: (message) => {
+            if (!Number.isNaN(message.senderId)) {
+              this.setState((prevState) => ({
+                roomMessages: prevState.roomMessages.concat({
+                  userId: message.senderId,
+                  text: message.text,
+                  createdAt: message.createdAt,
+                  id: message.id,
+                }),
+              }));
+            }
+          },
+        },
+      })
+      .catch((error) => {
+        console.error('error:', error);
       });
   }
 
   receiveSendMessage(messageText) {
     this.props.currentUser.sendMessage({
       text: messageText,
-      roomId: this.props.currentRoom.id
+      roomId: this.props.currentRoom.id,
     });
   }
 
   render() {
     const roomId = this.props.currentRoom.id;
-    const roomMap = this.props.roomMap.filter(item => item.roomId === roomId);
-    const otherUser = this.props.currentUser.users.filter(user => user.id === roomMap[0].otherMembers[0].id);
+    const roomMap = this.props.roomMap.filter((item) => item.roomId === roomId);
+    const otherUser = this.props.currentUser.users.filter(
+      (user) => user.id === roomMap[0].otherMembers[0].id,
+    );
     return (
-
       <div className="chat">
         <div className="chat-container">
           <div className="user-bar">
-            <div className="back" onClick={()=>this.props.goBack()}>
+            <div className="back" role="button" tabIndex={0} onClick={() => this.props.goBack()}>
               <i className="zmdi zmdi-arrow-left" />
             </div>
             <div className="avatar">
-              <img
-                src={roomMap[0].otherMembers[0].avatarURL}
-                alt="Avatar"
-              />
+              <img src={roomMap[0].otherMembers[0].avatarURL} alt="Avatar" />
             </div>
             <div className="name">
-              {roomMap.length && 
-              <span>{roomMap[0].otherMembers.map(member => member.name).join(', ')}</span>}
-              {otherUser.length &&
-              <span className="status">{otherUser[0].presence.state}</span>}
+              {roomMap.length && (
+                <span>{roomMap[0].otherMembers.map((member) => member.name).join(', ')}</span>
+              )}
+              {otherUser.length && <span className="status">{otherUser[0].presence.state}</span>}
             </div>
             <div className="actions more">
               <i className="zmdi zmdi-more-vert" />
@@ -94,5 +92,14 @@ class ChatRoom extends React.Component {
     );
   }
 }
+
+ChatRoom.propTypes = {
+  user: PropTypes.object.isRequired,
+  goBack: PropTypes.func.isRequired,
+  roomMap: PropTypes.array.isRequired,
+  currentUser: PropTypes.object.isRequired,
+  currentRoom: PropTypes.object.isRequired,
+  connectToChatManager: PropTypes.func.isRequired,
+};
 
 export default ChatRoom;
