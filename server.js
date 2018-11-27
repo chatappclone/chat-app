@@ -52,7 +52,8 @@ fetch(process.env.CHATKIT_TOKEN_PROVIDER_URL, {
   .then((response) => response.json())
   .then((authResponse) => {
     token = authResponse.access_token;
-  });
+  })
+  .catch((error) => console.log(error));
 
 // ROUTES //
 
@@ -95,15 +96,14 @@ app.post('/api/create-user', (req, res) => {
       [username, hash, avatar],
     )
       .then((response) => {
-        const userId = response.id.toString();
         chatkit
           .createUser({
-            id: userId,
+            id: response.id.toString(),
             name: response.username,
             avatarURL: response.avatar_url,
           })
           .then((data) => {
-            res.json({ status: 'OK', id: data.id, name: data.name });
+            res.json({ status: 'OK', id: data.id, username: data.name });
           });
       })
       .catch((error) => console.log(error));
@@ -122,9 +122,7 @@ app.post('/api/new-room', (req, res) => {
       res.json('Room created successfully');
       console.log('Room created successfully');
     })
-    .catch((err) => {
-      console.log(err);
-    });
+    .catch((error) => console.log(error));
 });
 
 // Get user's rooms by user id

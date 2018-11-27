@@ -5,7 +5,7 @@ import cx from 'classnames';
 
 function Message({ message, user }) {
   const currentUserId = user.id;
-  const msgType = parseInt(message.userId, 10) !== currentUserId ? 'received' : 'sent';
+  const msgType = message.userId !== currentUserId ? 'received' : 'sent';
   const classMsg = cx('message', msgType);
   const myDate = new Date(message.createdAt);
   const timestamp = `${myDate

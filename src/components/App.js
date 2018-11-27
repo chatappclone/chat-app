@@ -45,7 +45,7 @@ class App extends React.Component {
         const newRoom = {
           roomId: room.id,
           roomMembers: room.users,
-          otherMembers: room.users.filter((member) => member.id !== this.state.currentUser.id),
+          otherMembers: room.users.filter((member) => member.id !== String(this.state.user.id)),
         };
 
         this.setState((prevState) => ({
@@ -56,9 +56,37 @@ class App extends React.Component {
       });
   }
 
+  updateRoomMap() {
+    this.state.availableRooms.forEach((room) => {
+      Promise.all(
+        room.userIds.map((userId) =>
+          fetch(`/api/users/${userId}`).then((response) => response.json()),
+        ),
+      ).then((values) => {
+        const roomId = room.id;
+        const roomMembers = values;
+        const otherMembers = roomMembers.filter(
+          (member) => member.id !== String(this.state.user.id),
+        );
+        const { roomMap } = this.state;
+        this.setState({ roomMap: roomMap.concat([{ roomId, roomMembers, otherMembers }]) });
+      });
+    });
+  }
+
   connectToChatManager() {
     this.state.chatManager
-      .connect()
+      .connect({
+        onAddedToRoom: (room) => {
+          const roomData = { id: room.id, userIds: room.userIds, updatedAt: room.updatedAt };
+          this.setState(
+            (prevState) => ({
+              availableRooms: prevState.availableRooms.concat(roomData),
+            }),
+            () => this.updateRoomMap(),
+          );
+        },
+      })
       .then((currentUser) => {
         const otherUsers = currentUser.users.filter((user) => user.id !== currentUser.id);
         this.setState({
@@ -70,24 +98,12 @@ class App extends React.Component {
       })
       .then((currentUser) => {
         if (this.state.availableRooms.length === 0) {
-          currentUser.joinRoom({ roomId: 19371632 });
+          currentUser.joinRoom({ roomId: 19375514 });
         }
         return currentUser;
       })
       .then((currentUser) => {
-        this.state.availableRooms.forEach((room) => {
-          Promise.all(
-            room.userIds.map((userId) =>
-              fetch(`/api/users/${userId}`).then((response) => response.json()),
-            ),
-          ).then((values) => {
-            const roomId = room.id;
-            const roomMembers = values;
-            const otherMembers = roomMembers.filter((member) => member.id !== currentUser.id);
-            const { roomMap } = this.state;
-            this.setState({ roomMap: roomMap.concat([{ roomId, roomMembers, otherMembers }]) });
-          });
-        });
+        this.updateRoomMap();
         return currentUser;
       })
       .then((currentUser) => {
@@ -188,9 +204,7 @@ class App extends React.Component {
     fetch('/api/create-user', {
       method: 'POST',
       body: JSON.stringify(user),
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
     })
       .then((response) => response.json())
       .then((data) => {
