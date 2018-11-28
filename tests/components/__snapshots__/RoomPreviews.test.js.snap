@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Room Previews matches the snapshot 1`] = `
+<div>
+  <nav
+    className="room-previews__nav"
+  >
+    <div
+      className="room-previews__edit"
+    >
+      Edit
+    </div>
+    <div>
+      <h4>
+        Chats
+      </h4>
+    </div>
+    <div
+      className="room-previews__new"
+    >
+      <i
+        className="zmdi zmdi-border-color"
+        onClick={[MockFunction]}
+        role="button"
+        tabIndex={0}
+      />
+    </div>
+  </nav>
+  <div
+    className="room-previews__room-list"
+  />
+</div>
+`;
