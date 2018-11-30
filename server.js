@@ -15,11 +15,11 @@ app.use(bodyParser.json());
 const pgp = require('pg-promise')();
 
 const db = pgp({
-  host: process.env.DB_HOST,
-  port: 5432,
-  database: process.env.TABLE_NAME,
-  user: process.env.TABLE_USERNAME,
-  password: process.env.TABLE_PASSWORD,
+  host: process.env.DB_HOST || 'localhost',
+  port: process.env.DB_PORT || 5432,
+  database: process.env.DB_NAME,
+  user: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
 });
 // Password hashing
 const bcrypt = require('bcrypt');
