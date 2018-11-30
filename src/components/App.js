@@ -144,7 +144,9 @@ class App extends React.Component {
       instanceLocator: process.env.CHATKIT_INSTANCE_LOCATOR,
       userId,
       tokenProvider: new TokenProvider({
-        url: process.env.CHATKIT_TOKEN_PROVIDER_URL,
+        url: `https://us1.pusherplatform.io/services/chatkit_token_provider/v1/${
+          process.env.CHATKIT_INSTANCE_ID
+        }/token`,
       }),
     });
     this.setState(

@@ -39,16 +39,21 @@ const chatkit = new Chatkit.default({
 // GET CHATKIT TOKEN //
 let token;
 const instanceId = process.env.CHATKIT_INSTANCE_ID;
-fetch(process.env.CHATKIT_TOKEN_PROVIDER_URL, {
-  method: 'POST',
-  body: JSON.stringify({
-    grant_type: 'client_credentials',
-    user_id: 'jane',
-  }),
-  headers: {
-    'Content-Type': 'application/json',
+fetch(
+  `https://us1.pusherplatform.io/services/chatkit_token_provider/v1/${
+    process.env.CHATKIT_INSTANCE_ID
+  }/token`,
+  {
+    method: 'POST',
+    body: JSON.stringify({
+      grant_type: 'client_credentials',
+      user_id: 'jane',
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
   },
-})
+)
   .then((response) => response.json())
   .then((authResponse) => {
     token = authResponse.access_token;
