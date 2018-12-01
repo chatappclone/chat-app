@@ -139,6 +139,7 @@ class App extends React.Component {
   }
 
   loadUserChat() {
+    console.log(process.env.CHATKIT_INSTANCE_LOCATOR);
     const userId = this.state.user.id.toString();
     const chatManager = new ChatManager({
       instanceLocator: process.env.CHATKIT_INSTANCE_LOCATOR,
