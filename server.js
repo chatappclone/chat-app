@@ -21,6 +21,9 @@ const db = pgp({
   user: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
 });
+
+console.log(process.env);
+
 // Password hashing
 const bcrypt = require('bcrypt');
 
@@ -163,5 +166,5 @@ app.get('/api/users/:userId', (req, res) => {
 // Start listening
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
-  console.log(`Listening on port number ${port}`);
+  console.log(`Listening on port ${port}`);
 });
