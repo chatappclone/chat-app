@@ -47,16 +47,17 @@
     "body-parser": "^1.18.3",
     "classnames": "^2.2.6",
     "dotenv": "^6.1.0",
+    "dotenv-webpack": "^1.5.7",
     "event-stream": "3.3.4",
     "express": "^4.16.4",
     "hbs": "^4.0.1",
+    "merge": ">=1.2.1",
     "node": "^10.12.0",
     "node-fetch": "^2.2.0",
     "pg-promise": "^8.5.1",
     "prop-types": "^15.6.2",
     "react": "^16.5.2",
-    "react-dom": "^16.5.2",
-    "merge": ">=1.2.1"
+    "react-dom": "^16.5.2"
   },
   "devDependencies": {
     "babel-jest": "^22.4.1",

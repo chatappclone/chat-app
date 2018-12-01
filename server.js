@@ -22,8 +22,6 @@ const db = pgp({
   password: process.env.DB_PASSWORD,
 });
 
-console.log(process.env);
-
 // Password hashing
 const bcrypt = require('bcrypt');
 
