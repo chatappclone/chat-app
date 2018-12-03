@@ -12,6 +12,4 @@ ENV  NODE_ENV production
 
 EXPOSE 8080
 
-RUN npm run build 
-
-CMD ["node", "server.js"]
+RUN node server.js
