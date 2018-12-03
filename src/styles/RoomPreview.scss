@@ -1,12 +1,10 @@
 @import 'defaults';
 
 .room-preview {
-
   display: flex;
   height: 65px;
-  width: 100%;
+  max-width: 400px;
   padding-top: 2px;
-
 
   &__avatar {
     // flex-grow: 2;
@@ -27,13 +25,12 @@
   &__preview-info {
     // flex-grow: 10;
     height: 100%;
-    color: #8E8E92;
+    color: #8e8e92;
     font-size: 0.8rem;
-    border-bottom: 1px solid #E9E9E9;
+    border-bottom: 1px solid #e9e9e9;
     display: flex;
     flex-direction: column;
     min-width: 280px;
-
   }
 
   &__room-name {
@@ -43,7 +40,7 @@
 
   &__name {
     color: #000000;
-    font-size: 0.90rem;
+    font-size: 0.9rem;
   }
 
   &__room-name {
@@ -56,12 +53,12 @@
   &__chevron {
     // flex-grow: 1;
     height: 100%;
-    border-bottom: 1px solid #E9E9E9;
+    border-bottom: 1px solid #e9e9e9;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 1.5rem;
-    color: #8E8E92;
+    color: #8e8e92;
     min-width: 25px;
   }
 }

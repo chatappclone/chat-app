@@ -29,7 +29,6 @@
 
   &__existing-title {
     font-size: 20pt;
-
   }
 
   &__title {
@@ -42,7 +41,7 @@
 
   &__switch {
     text-decoration: underline;
-    color: #63B758;
+    color: #63b758;
   }
 
   &__view-switch {
@@ -66,72 +65,76 @@
 
     color: #232121;
     background-color: #fff;
-    border: 1px solid #D4D4D4;
+    border: 1px solid #d4d4d4;
     border-radius: 3px;
 
     font-weight: 500;
-    line-height: 1.0;
+    line-height: 1;
 
     -webkit-appearance: none;
-    -moz-appearance:    none;
-    appearance:         none;
+    -moz-appearance: none;
+    appearance: none;
 
     justify-content: center;
     align-items: center;
-
 
     box-shadow: 2px 5px 10px var(--color-smoke);
   }
 
   &__button {
-  display: flex;
-  overflow: hidden;
+    display: flex;
+    overflow: hidden;
 
-  margin: 10px 0px 10px 0px;
-  padding: 12px 12px;
-  width: 100%;
+    margin: 10px 0px 10px 0px;
+    padding: 12px 12px;
+    width: 100%;
 
-  cursor: pointer;
-  user-select: none;
-  transition: all 150ms linear;
-  text-align: center;
-  white-space: nowrap;
-  text-decoration: none !important;
-  text-transform: none;
-  text-transform: capitalize;
-
-  color: #fff;
-  background-color: #63B758;
-  border: 0 none;
-  border-radius: 3px;
-
-  font-weight: 600;
-  line-height: 1.0;
-
-  -webkit-appearance: none;
-  -moz-appearance:    none;
-  appearance:         none;
-
-  justify-content: center;
-  align-items: center;
-
-
-  box-shadow: 2px 5px 10px var(--color-smoke);
-
-  &:hover {
+    cursor: pointer;
+    user-select: none;
     transition: all 150ms linear;
+    text-align: center;
+    white-space: nowrap;
+    text-decoration: none !important;
+    text-transform: none;
+    text-transform: capitalize;
 
-    opacity: .85;
-  }
+    color: #fff;
+    background-color: #63b758;
+    border: 0 none;
+    border-radius: 3px;
 
-  &:active {
-    transition: all 150ms linear;
-    opacity: .75;
-  }
+    font-weight: 600;
+    line-height: 1;
 
-  &:focus {
-    outline: 1px dotted #25D366;
-    outline-offset: -4px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    justify-content: center;
+    align-items: center;
+
+    box-shadow: 2px 5px 10px var(--color-smoke);
+
+    &:hover {
+      transition: all 150ms linear;
+
+      opacity: 0.85;
+    }
+
+    &:active {
+      transition: all 150ms linear;
+      opacity: 0.75;
+    }
+
+    &:focus {
+      outline: 1px dotted #25d366;
+      outline-offset: -4px;
+    }
   }
+}
+
+@media screen and (min-width: 960px) {
+  .login {
+    background: url('/static/assets/background.jpg') top right repeat;
   }
 }

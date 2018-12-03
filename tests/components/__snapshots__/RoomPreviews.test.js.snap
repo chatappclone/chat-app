@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Room Previews matches the snapshot 1`] = `
-<div>
+<div
+  className="room-previews"
+>
   <nav
     className="room-previews__nav"
   >
@@ -10,10 +12,10 @@ exports[`Room Previews matches the snapshot 1`] = `
     >
       Edit
     </div>
-    <div>
-      <h4>
-        Chats
-      </h4>
+    <div
+      className="room-previews__title"
+    >
+      Chats
     </div>
     <div
       className="room-previews__new"

@@ -5,12 +5,10 @@ import '../styles/RoomPreviews.scss';
 
 function RoomPreviews({ rooms, roomMap, receiveHandleCurrentRoom, receiveNewChatView }) {
   return (
-    <div>
+    <div className="room-previews">
       <nav className="room-previews__nav">
         <div className="room-previews__edit">Edit</div>
-        <div>
-          <h4>Chats</h4>
-        </div>
+        <div className="room-previews__title">Chats</div>
         <div className="room-previews__new">
           <i
             className="zmdi zmdi-border-color"
